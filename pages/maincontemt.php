@@ -15,8 +15,11 @@ require ("scripts/DataBase.php");
     $rooms = $database->GetRooms();
 
     foreach ($rooms as $room) {
-        $inf = $room->getInfo();
-        echo "$inf"."<br>";
+        //$inf = $room->getInfo();
+
+        $block_id = $room->id_room;
+        include ("pages/parts/roomline.php");
+        echo "<br>";
     }
 
     ?>

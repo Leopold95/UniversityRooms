@@ -6,19 +6,20 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="css/shared.css">
 </head>
 <body>
 <?php
-require ("pages/shared/header.php");
+include ("pages/shared/header.php");
 ?>
 
 <?php
-require ("pages/maincontemt.php");
+include ("pages/maincontemt.php");
 ?>
 
 
 <?php
-require ("pages/shared/footer.php");
+include ("pages/shared/footer.php");
 ?>
 </body>
 </html>
