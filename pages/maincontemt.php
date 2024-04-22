@@ -14,7 +14,10 @@ require ("scripts/DataBase.php");
 
     $rooms = $database->GetRooms();
 
-    echo implode($rooms);
+    foreach ($rooms as $room) {
+        $inf = $room->getInfo();
+        echo "$inf"."<br>";
+    }
 
     ?>
 </main>
