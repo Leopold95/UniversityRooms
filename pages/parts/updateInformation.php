@@ -1,5 +1,5 @@
 <?php
-require ("scripts/DataBase.php");
+require("scripts/DataBase.php");
 use scripts\DataBase;
 
 

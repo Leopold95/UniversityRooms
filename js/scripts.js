@@ -6,7 +6,7 @@ $(document).ready(function (){
     $("button[name=detailsBtn]").click(function (){
         var roomId = $(this).val();
 
-        $("#information").load("scripts/updateInformation.php", {
+        $("#information").load("pages/parts/updateInformation.php", {
             needed: roomId
         });
 
