@@ -1,8 +1,6 @@
 <!-- element of room pepresents while looping rooms-->
-
-
-<div class="container-sm">
-    <div class="row border">
+<div class="container-sm mb-1 mt-1 row-color">
+    <div class="row">
         <div class="col text-center">
             <a>Номер кабінету: </a>
             <br>
@@ -14,11 +12,16 @@
             <a><?php echo $block_specialization;?></a>
 
         </div>
-        <div class="col">
-
+        <div class="col d-flex justify-content-center mx-auto p-2">
+            <button name="shortInfo" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Подробиці</input>
         </div>
-        <div class="col d-flex justify-content-end mx-auto p-2">
-            <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn btn-secondary" >Детельніше</input>
+        <div class="col  d-flex  justify-content-center mx-auto p-2">
+            <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Детальніше</input>
         </div>
     </div>
+
+    <div id="information_<?php echo $block_room_id;?>"></div>
 </div>
+
+
+

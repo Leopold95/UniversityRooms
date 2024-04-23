@@ -1,12 +1,12 @@
 <?php
 namespace scripts;
 
-require ("entity/KafedraEntity.php");
-require ("entity/RoomEntity.php");
-require ("entity/RoomInformationEntity.php");
-require ("entity/RoomSpecificationsEntity.php");
-require ("scripts/ConnectionInfo.php");
-require ("scripts/SqlQuarrys.php");
+require (__DIR__ . "/../entity/KafedraEntity.php");
+require (__DIR__ . "/../entity/RoomEntity.php");
+require (__DIR__ . "/../entity/RoomInformationEntity.php");
+require (__DIR__ . "/../entity/RoomSpecificationsEntity.php");
+require (__DIR__ . "/../scripts/ConnectionInfo.php");
+require (__DIR__ . "/../scripts/SqlQuarrys.php");
 
 use entity\RoomEntity;
 use Exception;
@@ -30,6 +30,12 @@ class DataBase
     public function __destruct()
     {
         $this->connection->close();
+    }
+
+    public  function Disconnect()
+    {
+        if($this->connection->ping())
+            $this->connection->close();
     }
 
     public function GetKafedras()
@@ -68,19 +74,28 @@ class DataBase
 
     public function GetRoomById($id)
     {
-        $rom = new RoomEntity();
+        $room = new RoomEntity();
 
         try{
             $result = $this->connection->query($this->quarry->getRoomById($id));
             $row = mysqli_fetch_assoc($result);
-
-            $rom->id_room = $row["id_room"];
+            $room->id_room = $row["id_room"];
+            $room->box = $row["box"];
+            $room->number_room = $row["nomber_room"];
+            $room->capacity = $row["capacity"];
+            $room->area = $row["area"];
+            $room->kafedra_id = $row["kafedra_id"];
+            $room->specialization = $row["specialization"];
+            $room->Inform = $row["Inform"];
+            $room->Korp = $row["Korp"];
+            $room->educational = $row["educational"];
+            $room->photo_url = $row["photo_url"];
         }
         catch (Exception $e){
-            return $rom;
+            return $room;
         }
 
-        return $rom;
+        return $room;
     }
 
     public function  GetRoomInfo($roomId)

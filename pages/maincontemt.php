@@ -10,9 +10,6 @@ require ("scripts/DataBase.php");
 ?>
 
 <main>
-
-    <div id="information"></div>
-
     <div class="container-fluid">
         <?php
         foreach ($rooms as $room) {
@@ -20,7 +17,7 @@ require ("scripts/DataBase.php");
             $block_room_id = $room->id_room;
             $block_specialization = $room->specialization;
             include ("pages/parts/roomline.php");
-            echo "<br>";
+
         }
         ?>
     </div>
