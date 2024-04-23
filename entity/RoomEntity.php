@@ -9,7 +9,7 @@ class RoomEntity
     // Properties
     public $id_room;
     public $box;
-    public $nomber_room;
+    public $number_room;
     public $capacity;
     public $area;
     public $kafedra_id;
@@ -24,7 +24,7 @@ class RoomEntity
         return "[Room(
           ID: $this->id_room,
           Box: $this->box,
-          Number: $this->nomber_room, 
+          Number: $this->number_room, 
           Capacity: $this->capacity, 
           Area: $this->area, 
           Kafedra ID: $this->kafedra_id, 
