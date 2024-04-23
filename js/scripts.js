@@ -3,9 +3,12 @@
 
 
 $(document).ready(function (){
-    var lastTag = "";
+    //lasr tag global variable for short btn functioality
+    let lastTag = "";
 
-    $("button[name=detailsBtn]").click(function (){
+
+    //short details btn pressed
+    $("button[name=shortInfo]").click(function (){
         var roomId = $(this).val();
         var tag = "#information_" + roomId;
 
@@ -24,15 +27,17 @@ $(document).ready(function (){
 
         //load new information
         $(tag).load("pages/parts/updateInformation.php", {
-                needed: roomId
+            needed: roomId
         });
     });
 
-    $("button[name=shortInfo]").click(function (){
+    //whole information showcase
+    $("button[name=detailsBtn]").click(function (){
         var roomId = $(this).val();
-
-        console.log(roomId);
     });
+
+
+
 });
 
 

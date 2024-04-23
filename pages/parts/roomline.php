@@ -1,26 +1,28 @@
 <!-- element of room pepresents while looping rooms-->
-<div class="container-sm mb-1 mt-1 row-color">
-    <div class="row">
-        <div class="col text-center">
-            <a>Номер кабінету: </a>
-            <br>
-            <a><?php echo $block_number_room;?></a>
-        </div>
-        <div class="col text-center">
-            <a>Призначення: </a>
-            <br>
-            <a><?php echo $block_specialization;?></a>
+<div class="container mb-1 mt-1 row-color">
+    <div class="col">
+        <div class="row">
+            <div class="col text-center">
+                <a>Номер кабінету: </a>
+                <br>
+                <a><?php echo $block_number_room;?></a>
+            </div>
+            <div class="col text-center">
+                <a>Призначення: </a>
+                <br>
+                <a><?php echo $block_specialization;?></a>
 
+            </div>
+            <div class="col d-flex justify-content-center mx-auto p-2">
+                <button name="shortInfo" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Подробиці</input>
+            </div>
+            <div class="col  d-flex  justify-content-center mx-auto p-2">
+                <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Детальніше</input>
+            </div>
         </div>
-        <div class="col d-flex justify-content-center mx-auto p-2">
-            <button name="shortInfo" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Подробиці</input>
-        </div>
-        <div class="col  d-flex  justify-content-center mx-auto p-2">
-            <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Детальніше</input>
-        </div>
+
+        <div class="pb-2" id="information_<?php echo $block_room_id;?>"></div>
     </div>
-
-    <div id="information_<?php echo $block_room_id;?>"></div>
 </div>
 
 
