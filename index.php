@@ -1,39 +1,41 @@
 <!doctype html>
 <html lang="ua">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/shared.css">
 
-    <!--boostrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script
-            src="https://code.jquery.com/jquery-3.7.1.js"
-            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-            crossorigin="anonymous"></script>
+<?php
+include ("pages/shared/head.php");
+?>
 
-    <script src="js/scripts.js"></script>
-</head>
 <body>
 <?php
 include ("pages/shared/header.php");
 ?>
 
-<?php
-include ("pages/maincontemt.php");
-?>
+<main>
+    <div class="container-fluid">
+        <!--Search group-->
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <input id="roomNumberId"  placeholder="Кабінет" type="number" class="form-control"/>
+                        <input id="kafedraValId" placeholder="Кафедра" type="text" class="form-control">
+                        <button name="btnSearch" class="btn btn-outline-secondary" type="button" >Пошук</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div>
+            <div id="mainRoomsListBlock">
+            </div>
+        </div>
+
+
+    </div>
+</main>
 
 <?php
 include ("pages/shared/footer.php");
 ?>
 </body>
 </html>
-
-<?php
-//require ("scripts/buttonclicks.php");
-//?>

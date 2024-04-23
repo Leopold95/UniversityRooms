@@ -1,10 +1,10 @@
 <?php
 require(__DIR__ . "/../../scripts/DataBase.php");
-use \scripts\DataBase;
+use scripts\DataBase;
 
 $database = new DataBase();
 
-$variable = $_POST["needed"];
+$variable = $_POST["roomid"];
 
 $room = $database->GetRoomById($variable);
 ?>

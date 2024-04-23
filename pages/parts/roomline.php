@@ -14,13 +14,14 @@
 
             </div>
             <div class="col d-flex justify-content-center mx-auto p-2">
-                <button name="shortInfo" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Подробиці</input>
+                <button name="shortInfo" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Подробиці</button>
             </div>
             <div class="col  d-flex  justify-content-center mx-auto p-2">
-                <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Детальніше</input>
+                <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Детальніше</button>
             </div>
         </div>
 
+        <!--Short room information-->
         <div class="pb-2" id="information_<?php echo $block_room_id;?>"></div>
     </div>
 </div>

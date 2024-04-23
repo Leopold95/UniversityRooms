@@ -9,4 +9,9 @@ class SqlQuarrys
     {
         return "SELECT * FROM `room` WHERE id_room=$id";
     }
+
+    public static function getRoomByNumber($number)
+    {
+        return "SELECT * FROM `room` WHERE nomber_room=$number";
+    }
 }
