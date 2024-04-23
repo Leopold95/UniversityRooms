@@ -1,8 +1,21 @@
 //fires when "details" btn on room information line clicked
-function roomBlockClicked(roomId) {
-    console.log(roomId)
-    const myModal = document.getElementById('exampleModal')
-    const myInput = document.getElementById('myInput')
 
-    exampleModal.focus();
-}
+
+
+$(document).ready(function (){
+    $("button[name=detailsBtn]").click(function (){
+        var roomId = $(this).val();
+
+        $("#information").load("scripts/updateInformation.php", {
+            needed: roomId
+        });
+
+        console.log(roomId);
+    });
+});
+
+
+
+
+
+

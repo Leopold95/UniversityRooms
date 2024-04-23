@@ -1,8 +1,5 @@
 <?php
 namespace scripts;
-use entity\RoomEntity;
-use Exception;
-use mysqli;
 
 require ("entity/KafedraEntity.php");
 require ("entity/RoomEntity.php");
@@ -10,6 +7,11 @@ require ("entity/RoomInformationEntity.php");
 require ("entity/RoomSpecificationsEntity.php");
 require ("scripts/ConnectionInfo.php");
 require ("scripts/SqlQuarrys.php");
+
+use entity\RoomEntity;
+use Exception;
+use mysqli;
+
 class DataBase
 {
     private $info;
@@ -68,7 +70,15 @@ class DataBase
     {
         $rom = new RoomEntity();
 
+        try{
+            $result = $this->connection->query($this->quarry->getRoomById($id));
+            $row = mysqli_fetch_assoc($result);
 
+            $rom->id_room = $row["id_room"];
+        }
+        catch (Exception $e){
+            return $rom;
+        }
 
         return $rom;
     }

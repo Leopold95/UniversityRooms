@@ -2,7 +2,7 @@
 
 
 <div class="container-sm">
-    <div method="post" action="" class="row border">
+    <div class="row border">
         <div class="col text-center">
             <a>Номер кабінету: </a>
             <br>
@@ -18,7 +18,7 @@
 
         </div>
         <div class="col d-flex justify-content-end mx-auto p-2">
-            <button type="submit" name="btnDetails" onclick="roomBlockClicked(<?php echo $block_room_id;?>)" class="btn btn-secondary" >Детельніше</input>
+            <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn btn-secondary" >Детельніше</input>
         </div>
     </div>
 </div>
