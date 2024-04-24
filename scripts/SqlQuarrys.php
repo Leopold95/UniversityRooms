@@ -15,9 +15,9 @@ class SqlQuarrys
         return "SELECT * FROM `room` WHERE nomber_room=$number";
     }
 
-    public static function getKafedraIdsByName($name)
+    public static function getKafedraById($id)
     {
-        return "SELECT id_kafedra FROM kafedra WHERE product_name LIKE $name;";
+        return "SELECT * FROM kafedra WHERE id_kafedra=$id";
     }
 
     public static function getRoomsByKafId($id)
@@ -39,6 +39,19 @@ class SqlQuarrys
     {
         return "SELECT name_kafedra FROM kafedra WHERE id_kafedra=$id;";
     }
+    public static function addRoomImage($pickId, $url)
+    {
+        return "INSERT INTO room_images (room_id, url) VALUES ('$pickId', '$url');";
+    }
 
+    public static function getKafedraIdIntoRoom($roomId)
+    {
+        return "SELECT kafedra_id FROM room WHERE id_room=$roomId;";
+    }
+
+    public static function getRoomImages($roomId)
+    {
+        return "SELECT url FROM room_images WHERE room_id=$roomId;";
+    }
 
 }

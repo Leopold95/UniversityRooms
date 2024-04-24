@@ -17,9 +17,12 @@ $(document).ready(function (){
     });
 });
 
-//short details btn pressed
-$(document).on('click', "button[name=shortInfo]", (function(){
-    var roomId = $(this).val();
+//show short details on the row clicked
+$(document).on("click", ".info-row", (function (){
+    //console.log();
+
+
+    var roomId = $(this).attr("data-value");
     var tag = "#information_" + roomId;
 
     //check if same btn pressed
@@ -64,6 +67,13 @@ $(document).on('click', "button[name=btnSearch]", (function(){
             $("#mainRoomsListBlock").html(response);
         }
     });
+}));
+
+//short room photo preview clicked
+$(document).on("click", ".idClickableSmallRoomPreview", (function (){
+    var roomUrl = $(this).attr("src");
+    var image = document.getElementById("roomPreview");
+    image.src = roomUrl;
 }));
 
 

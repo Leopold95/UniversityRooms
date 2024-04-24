@@ -229,6 +229,86 @@ class DataBase
         return $kafedra;
     }
 
+    public function  GetKafedraById($id): KafedraEntity
+    {
+        $kafedra = new KafedraEntity();
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::getKafedraById($id));
+            if($result->num_rows <= 0)
+                return $kafedra;
+
+            $row = mysqli_fetch_assoc($result);
+
+            $kafedra->id_kafedra = $row["id_kafedra"];
+            $kafedra->name_kafedra = $row["name_kafedra"];
+            $kafedra->short_kafedra = $row["short_kafedra"];
+            $kafedra->name = $row["name"];
+            $kafedra->fakyltet_id = $row["fakyltet_id"];
+            $kafedra->produce = $row["produce"];
+            $kafedra->stateexam = $row["stateexam"];
+            $kafedra->order_dep = $row["order_dep"];
+            $kafedra->removed = $row["removed"];
+        }
+        catch (Exception $e){
+            return $kafedra;
+        }
+
+
+        return $kafedra;
+    }
+
+    public function  GetKafedraIdIntoRoom($roomId): int
+    {
+        $kafId = 0;
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::getKafedraIdIntoRoom($roomId));
+            if($result->num_rows <= 0)
+                return $kafId;
+
+            $row = mysqli_fetch_assoc($result);
+            return $row["kafedra_id"];
+        }
+        catch (Exception $e){
+            return $kafId;
+        }
+    }
+
+    public function GetRoomImages($roomId)
+    {
+        $roomImages = array();
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::getRoomImages($roomId));
+
+            if($result->num_rows <= 0)
+                return $roomImages;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                array_push($roomImages, $row["url"]);
+            }
+        }
+        catch (Exception $e){
+            return $roomImages;
+        }
+
+        return $roomImages;
+    }
+
+    public function AddRoomImage($roomId, $pickUrl) : bool
+    {
+        try{
+            $result = $this->connection->query(SqlQuarrys::addRoomImage($roomId, $pickUrl));
+            return $result;
+        }
+        catch (Exception $e){
+            return false;
+        }
+
+        return  false;
+    }
+
     public function  GetSpecifications()
     {
 

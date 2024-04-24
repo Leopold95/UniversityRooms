@@ -1,17 +1,19 @@
 <!doctype html>
 <html lang="ua">
 
-<?php
-include ("pages/shared/head.php");
-?>
-
+<head>
+    <title>Список аудиторій</title>
+    <?php
+    include ("pages/shared/head.php");
+    ?>
+</head>
 <body>
 <?php
 include ("pages/shared/header.php");
 ?>
 
 <main>
-    <div class="container-fluid">
+    <div class="container-sm">
         <!--Search group-->
         <div class="col">
             <div class="row">
