@@ -37,46 +37,49 @@ include ("pages/shared/header.php");
                 </tr>
                 <tr>
                     <th>Number</th>
-                    <td><?php echo $room->number_room;?></td>>
+                    <td><?php echo $room->number_room;?></td>
                 </tr>
                 <tr>
                     <th>Kafedra</th>
-                    <td><?php echo $kafedra->name_kafedra?></td>>
+                    <td><?php echo $kafedra->name_kafedra?></td>
                 </tr>
                 <tr>
                     <th>Capacity</th>
-                    <td><?php echo $room->capacity;?></td>>
+                    <td><?php echo $room->capacity;?></td>
                 </tr>
                 <tr>
                     <th>Area</th>
-                    <td><?php echo $room->area;?></td>>
+                    <td><?php echo $room->area;?></td>
                 </tr>
                 <tr>
                     <th>Specialization</th>
-                    <td><?php echo $room->specialization;?></td>>
+                    <td><?php echo $room->specialization;?></td>
                 </tr>
                 <tr>
                     <th>Inform</th>
-                    <td><?php echo $room->Inform;?></td>>
+                    <td><?php echo $room->Inform;?></td>
                 </tr>
                 <tr>
                     <th>Korp</th>
-                    <td><?php echo $room->Korp;?></td>>
+                    <td><?php echo $room->Korp;?></td>
                 </tr>
                 <tr>
                     <th>Educational</th>
-                    <td><?php echo $room->educational;?></td>>
+                    <td><?php echo $room->educational;?></td>
                 </tr>
                 <tr>
                     <th>Deleted</th>
-                    <td><?php echo $room->deleted;?></td>>
-                </tr>
+                    <td><?php echo $room->deleted;?></td>
+            </tr>
             </table>
         </div>
+        <!-- room image preview -->
         <div class="col d-flex align-items-center justify-content-center">
+            <!-- default preview of forst image into array -->
             <img class="img-preview" src="<?php echo $images[0] ?? "";?>" id="roomPreview">
         </div>
     </div>
+    <!-- scrollable rooms images list  -->
     <div class="container mt-2 testimonial-group">
         <div class="row">
             <div class="col ">

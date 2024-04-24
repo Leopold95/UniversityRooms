@@ -3,17 +3,17 @@
     <div class="col">
         <div class="row">
             <div class="col text-center">
-                <a>Кабінет: </a>
+                <a><strong>Кабінет: </strong></a>
                 <br>
                 <a><?php echo $block_number_room;?></a>
             </div>
             <div class="col text-center">
-                <a>Призначення: </a>
+                <a><strong>Призначення: </strong></a>
                 <br>
                 <a><?php echo $block_specialization;?></a>
             </div>
             <div class="col text-center">
-                <a>Кафедра: </a>
+                <a><strong>Кафедра: </strong></a>
                 <br>
                 <a><?php echo $block_kafName;?></a>
             </div>
