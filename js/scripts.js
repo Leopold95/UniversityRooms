@@ -3,11 +3,17 @@
 let lastTag = "";
 
 $(document).ready(function (){
-    //first preload information
-    $("#mainRoomsListBlock").load("pages/parts/roomsloader.php", {
-        useSearch: false,
-        roomNum: "",
-        kafedraTxt: ""
+    $.ajax({
+        url: "pages/parts/roomsloader.php",
+        type: 'GET',
+        data: {
+            useSearch: false,
+            roomNum: 0,
+            kafedraTxt: ""
+        },
+        success: function(response) {
+            $("#mainRoomsListBlock").html(response);
+        }
     });
 });
 
@@ -42,12 +48,21 @@ $(document).on('click', "button[name=detailsBtn]", (function(){
 $(document).on('click', "button[name=btnSearch]", (function(){
     var num = document.getElementById("roomNumberId").value;
     var kaf = document.getElementById("kafedraValId").value;
+    var kor = document.getElementById("boxId").value;
 
-
-    $("#mainRoomsListBlock").load("pages/parts/roomsloader.php", {
-        useSearch: true,
-        roomNum: num,
-        kafedraTxt: kaf
+    $("#mainRoomsListBlock").text("");
+    $.ajax({
+        url: "pages/parts/roomsloader.php",
+        type: 'POST',
+        data: {
+            useSearch: true,
+            roomNum: num,
+            kafedraTxt: kaf,
+            box: kor
+        },
+        success: function(response) {
+            $("#mainRoomsListBlock").html(response);
+        }
     });
 }));
 

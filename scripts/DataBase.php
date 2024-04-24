@@ -8,6 +8,7 @@ require (__DIR__ . "/../entity/RoomSpecificationsEntity.php");
 require (__DIR__ . "/../scripts/ConnectionInfo.php");
 require (__DIR__ . "/../scripts/SqlQuarrys.php");
 
+use entity\KafedraEntity;
 use entity\RoomEntity;
 use Exception;
 use mysqli;
@@ -29,7 +30,8 @@ class DataBase
 
     public function __destruct()
     {
-        $this->connection->close();
+        if($this->connection->ping())
+            $this->connection->close();
     }
 
     public  function Disconnect()
@@ -49,6 +51,10 @@ class DataBase
 
         try{
             $result = $this->connection->query($this->quarry->getAllRooms);
+
+            if($result->num_rows <= 0)
+                return $arrRooms;
+
             while($row = mysqli_fetch_assoc($result)) {
                 $elemt = new RoomEntity();
                 $elemt->id_room = $row["id_room"];
@@ -78,6 +84,10 @@ class DataBase
 
         try{
             $result = $this->connection->query(SqlQuarrys::getRoomById($id));
+
+            if($result->num_rows <= 0)
+                return $room;
+
             $row = mysqli_fetch_assoc($result);
             $room->id_room = $row["id_room"];
             $room->box = $row["box"];
@@ -98,35 +108,125 @@ class DataBase
         return $room;
     }
 
-    public function GetRoomByNumber($number):RoomEntity
+    public function GetRoomsByNumber($number)
     {
-        $room = new RoomEntity();
+        $arrRooms = array();
 
         try{
-            $result = $this->connection->query(SqlQuarrys::getRoomByNumber($number));
-            $row = mysqli_fetch_assoc($result);
-            $room->id_room = $row["id_room"];
-            $room->box = $row["box"];
-            $room->number_room = $row["nomber_room"];
-            $room->capacity = $row["capacity"];
-            $room->area = $row["area"];
-            $room->kafedra_id = $row["kafedra_id"];
-            $room->specialization = $row["specialization"];
-            $room->Inform = $row["Inform"];
-            $room->Korp = $row["Korp"];
-            $room->educational = $row["educational"];
-            $room->photo_url = $row["photo_url"];
+            $result = $this->connection->query(SqlQuarrys::getRoomsByNumber($number));
+
+            if($result->num_rows <= 0)
+                return $arrRooms;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                $elemt = new RoomEntity();
+                $elemt->id_room = $row["id_room"];
+                $elemt->box = $row["box"];
+                $elemt->number_room = $row["nomber_room"];
+                $elemt->capacity = $row["capacity"];
+                $elemt->area = $row["area"];
+                $elemt->kafedra_id = $row["kafedra_id"];
+                $elemt->specialization = $row["specialization"];
+                $elemt->Inform = $row["Inform"];
+                $elemt->Korp = $row["Korp"];
+                $elemt->educational = $row["educational"];
+                $elemt->photo_url = $row["photo_url"];
+                array_push($arrRooms, $elemt);
+            }
         }
         catch (Exception $e){
-            return $room;
+            return $arrRooms;
         }
 
-        return $room;
+        return $arrRooms;
     }
 
-    public function  GetRoomInfo($roomId)
+    public function GetRoomsByKafedraName($kafedraName)
     {
-        
+        $arrRooms = array();
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::GetRoomsByKafName($kafedraName));
+
+            if($result->num_rows <= 0)
+                return $arrRooms;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                $elemt = new RoomEntity();
+                $elemt->id_room = $row["id_room"];
+                $elemt->box = $row["box"];
+                $elemt->number_room = $row["nomber_room"];
+                $elemt->capacity = $row["capacity"];
+                $elemt->area = $row["area"];
+                $elemt->kafedra_id = $row["kafedra_id"];
+                $elemt->specialization = $row["specialization"];
+                $elemt->Inform = $row["Inform"];
+                $elemt->Korp = $row["Korp"];
+                $elemt->educational = $row["educational"];
+                $elemt->photo_url = $row["photo_url"];
+                array_push($arrRooms, $elemt);
+            }
+        }
+        catch (Exception $e){
+            return $arrRooms;
+        }
+
+        return $arrRooms;
+    }
+
+    public function GetRoomsByBox($box)
+    {
+        $arrRooms = array();
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::GetRoomsByBoxName($box));
+
+            if($result->num_rows <= 0)
+                return $arrRooms;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                $elemt = new RoomEntity();
+                $elemt->id_room = $row["id_room"];
+                $elemt->box = $row["box"];
+                $elemt->number_room = $row["nomber_room"];
+                $elemt->capacity = $row["capacity"];
+                $elemt->area = $row["area"];
+                $elemt->kafedra_id = $row["kafedra_id"];
+                $elemt->specialization = $row["specialization"];
+                $elemt->Inform = $row["Inform"];
+                $elemt->Korp = $row["Korp"];
+                $elemt->educational = $row["educational"];
+                $elemt->photo_url = $row["photo_url"];
+                array_push($arrRooms, $elemt);
+            }
+        }
+        catch (Exception $e){
+            return $arrRooms;
+        }
+
+        return $arrRooms;
+    }
+
+    public function  GetKafedraNameById($id): string
+    {
+        $kafedra = "";
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::KafNameById($id));
+
+            if($result->num_rows <= 0)
+                return $kafedra;
+
+            $row = mysqli_fetch_assoc($result);
+
+            $kafedra = $row["name_kafedra"];
+        }
+        catch (Exception $e){
+            return $kafedra;
+        }
+
+
+        return $kafedra;
     }
 
     public function  GetSpecifications()

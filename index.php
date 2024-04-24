@@ -18,6 +18,7 @@ include ("pages/shared/header.php");
                 <div class="col">
                     <div class="input-group mb-3">
                         <input id="roomNumberId"  placeholder="Кабінет" type="number" class="form-control"/>
+                        <input id="boxId" placeholder="Корпус" type="text" class="form-control">
                         <input id="kafedraValId" placeholder="Кафедра" type="text" class="form-control">
                         <button name="btnSearch" class="btn btn-outline-secondary" type="button" >Пошук</button>
                     </div>
@@ -29,7 +30,6 @@ include ("pages/shared/header.php");
             <div id="mainRoomsListBlock">
             </div>
         </div>
-
 
     </div>
 </main>

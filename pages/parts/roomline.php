@@ -3,7 +3,7 @@
     <div class="col">
         <div class="row">
             <div class="col text-center">
-                <a>Номер кабінету: </a>
+                <a>Кабінет: </a>
                 <br>
                 <a><?php echo $block_number_room;?></a>
             </div>
@@ -11,7 +11,11 @@
                 <a>Призначення: </a>
                 <br>
                 <a><?php echo $block_specialization;?></a>
-
+            </div>
+            <div class="col text-center">
+                <a>Кафедра: </a>
+                <br>
+                <a><?php echo $block_kafName;?></a>
             </div>
             <div class="col d-flex justify-content-center mx-auto p-2">
                 <button name="shortInfo" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Подробиці</button>
