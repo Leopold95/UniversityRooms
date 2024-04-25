@@ -17,14 +17,14 @@ tr:nth-child(even) {
 }
 
 .img-preview{
-    max-height: 40em;
-    max-width: 25em ;
+    height: 20em;
+    width: 25em ;
 }
 
 
 .img-small{
-    max-height: 15em;
-    max-width: 15em ;
+    height: 10em;
+    width: 10em ;
     margin-right: 1em;
     cursor: pointer;
 }

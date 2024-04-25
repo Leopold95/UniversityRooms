@@ -54,4 +54,9 @@ class SqlQuarrys
         return "SELECT url FROM room_images WHERE room_id=$roomId;";
     }
 
+    public static function removeRoomImages($roomIUrl)
+    {
+        return "DELETE FROM room_images WHERE url='$roomIUrl';";
+    }
+
 }

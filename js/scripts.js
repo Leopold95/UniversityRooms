@@ -2,6 +2,7 @@
 
 let lastTag = "";
 
+
 $(document).ready(function (){
     $.ajax({
         url: "pages/parts/roomsloader.php",
@@ -69,11 +70,5 @@ $(document).on('click', "button[name=btnSearch]", (function(){
     });
 }));
 
-//short room photo preview clicked
-$(document).on("click", ".idClickableSmallRoomPreview", (function (){
-    var roomUrl = $(this).attr("src");
-    var image = document.getElementById("roomPreview");
-    image.src = roomUrl;
-}));
 
 

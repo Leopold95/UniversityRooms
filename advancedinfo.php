@@ -20,6 +20,7 @@ $images = $database->GetRoomImages($roomId);
     include ("pages/shared/head.php");
     ?>
     <link rel="stylesheet" href="css/advancedinfo.css"/>
+    <script type="text/javascript" src="/js/advancedInfo.js"></script>
 </head>
 
 <body>
@@ -27,40 +28,81 @@ $images = $database->GetRoomImages($roomId);
 include ("pages/shared/header.php");
 ?>
 
+
+<!--modal adding image window-->
+<div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImageModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Додати фотографію</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">URL фотографії:</label>
+                        <textarea name="roomUrlPhotoLoading" class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                <button name="tryLoadRoomPhoto" type="button" class="btn btn-primary">Завантажити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal remove image -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Видалити поточну фотографію?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Відміна</button>
+                <button name="removeImageApplayed" type="button" class="btn btn-primary">Підтверджую</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <main class="container-fluid">
     <div class="row">
         <div class="col">
             <table>
                 <tr>
-                    <th>Box</th>
+                    <th>Корпус</th>
                     <td><?php echo $room->box;?></td>
                 </tr>
                 <tr>
-                    <th>Number</th>
+                    <th>Кабінет</th>
                     <td><?php echo $room->number_room;?></td>
                 </tr>
                 <tr>
-                    <th>Kafedra</th>
+                    <th>Кафедра</th>
                     <td><?php echo $kafedra->name_kafedra?></td>
                 </tr>
                 <tr>
-                    <th>Capacity</th>
+                    <th>Місткість</th>
                     <td><?php echo $room->capacity;?></td>
                 </tr>
                 <tr>
-                    <th>Area</th>
+                    <th>Розмір</th>
                     <td><?php echo $room->area;?></td>
                 </tr>
                 <tr>
-                    <th>Specialization</th>
+                    <th>Призначення</th>
                     <td><?php echo $room->specialization;?></td>
                 </tr>
                 <tr>
-                    <th>Inform</th>
+                    <th>Інформація</th>
                     <td><?php echo $room->Inform;?></td>
                 </tr>
                 <tr>
-                    <th>Korp</th>
+                    <th>Копус</th>
                     <td><?php echo $room->Korp;?></td>
                 </tr>
                 <tr>
@@ -74,9 +116,13 @@ include ("pages/shared/header.php");
             </table>
         </div>
         <!-- room image preview -->
-        <div class="col d-flex align-items-center justify-content-center">
+        <div class="col d-flex align-items-center justify-content-center flex-column">
             <!-- default preview of forst image into array -->
             <img class="img-preview" src="<?php echo $images[0] ?? "";?>" id="roomPreview">
+            <div>
+                <button type="button" value="<?php echo $room->id_room?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Видалити фото</button>
+            </div>
         </div>
     </div>
     <!-- scrollable rooms images list  -->

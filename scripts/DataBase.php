@@ -309,6 +309,19 @@ class DataBase
         return  false;
     }
 
+    public function RemoveRoomImage($imgUrl) : bool
+    {
+        try{
+            $result = $this->connection->query(SqlQuarrys::removeRoomImages($imgUrl));
+            return $result;
+        }
+        catch (Exception $e){
+            return false;
+        }
+
+        return  false;
+    }
+
     public function  GetSpecifications()
     {
 

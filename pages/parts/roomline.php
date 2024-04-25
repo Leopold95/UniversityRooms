@@ -17,9 +17,6 @@
                 <br>
                 <a><?php echo $block_kafName;?></a>
             </div>
-<!--            <div class="col d-flex justify-content-center mx-auto p-2">-->
-<!--                <button name="shortInfo" id="" value="--><?php //echo $block_room_id;?><!--" class="btn-roomline" >Подробиці</button>-->
-<!--            </div>-->
             <div class="col  d-flex  justify-content-center mx-auto p-2">
                 <button name="detailsBtn" id="" value="<?php echo $block_room_id;?>" class="btn-roomline" >Детальніше</button>
             </div>
