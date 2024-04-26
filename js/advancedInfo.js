@@ -1,5 +1,10 @@
 var currentRoomImagePreview = "";
 
+//initialize room previw image after page loaded
+$(document).ready(function (){
+    currentRoomImagePreview = $(".idClickableSmallRoomPreview").attr("src");
+});
+
 //short room photo preview clicked
 $(document).on("click", ".idClickableSmallRoomPreview", (function (){
     var roomUrl = $(this).attr("src");
@@ -30,7 +35,6 @@ $(document).on('click', "button[name=tryLoadRoomPhoto]", (function(){
             roomID: roomId,
             imageURL: url
         },
-        //JSON.parse(response).uploadStatus
         success: function(response) {
             console.log("succses, server send: ", response);
             if(JSON.parse(response).uploadStatus === "1")

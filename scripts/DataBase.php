@@ -18,14 +18,11 @@ class DataBase
     private $info;
     private $connection;
     private $quarry;
-    public $isConnected;
     function __construct() {
         $this->info = new ConnectionInfo();
         $this->quarry = new SqlQuarrys();
         $this->connection = new mysqli($this->info->host, $this->info->username,
-            $this->info->pwd, $this->info->db_name);
-
-        $this->isConnected = $this->connection->ping();
+            $this->info->pwd, $this->info->db_name, $this->info->port);
     }
 
     public function __destruct()

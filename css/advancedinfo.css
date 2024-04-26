@@ -17,19 +17,16 @@ tr:nth-child(even) {
 }
 
 .img-preview{
-    height: 20em;
-    width: 25em ;
+    height: 25em;
+    width: 35em ;
 }
-
 
 .img-small{
     height: 10em;
-    width: 10em ;
+    width: 15em ;
     margin-right: 1em;
     cursor: pointer;
 }
-
-
 
 /* The heart of the matter */
 .testimonial-group > .row {
@@ -40,3 +37,25 @@ tr:nth-child(even) {
     display: inline-block;
     float: none;
 }
+
+@media (max-width: 750px) {
+    .img-preview{
+        height: 10em;
+        width: 20em ;
+    }
+}
+
+@media (max-width: 540px) {
+    .img-preview{
+        height: 10em;
+        width: 20em ;
+    }
+}
+@media (max-width: 320px) {
+    .img-preview{
+
+        height: 5em;
+        width: 15em ;
+    }
+}
+

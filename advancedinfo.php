@@ -20,7 +20,7 @@ $images = $database->GetRoomImages($roomId);
     include ("pages/shared/head.php");
     ?>
     <link rel="stylesheet" href="css/advancedinfo.css"/>
-    <script type="text/javascript" src="/js/advancedInfo.js"></script>
+    <script type="text/javascript" src="js/advancedInfo.js"></script>
 </head>
 
 <body>
@@ -123,19 +123,24 @@ include ("pages/shared/header.php");
                 <button type="button" value="<?php echo $room->id_room?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Видалити фото</button>
             </div>
+
         </div>
-    </div>
-    <!-- scrollable rooms images list  -->
-    <div class="container mt-2 testimonial-group">
-        <div class="row">
-            <div class="col ">
-                <?php
-                foreach ($images as $image){
-                    echo "<img class='img-small idClickableSmallRoomPreview' src='$image'/>";
-                }
-                ?>
+
+
+        <!-- scrollable rooms images list  -->
+        <div class="container mt-2 testimonial-group d-flex justify-content-center">
+            <div class="row">
+                <div class="col ">
+                    <?php
+                    foreach ($images as $image){
+                        echo "<img class='img-small idClickableSmallRoomPreview' src='$image'/>";
+                    }
+                    ?>
+                </div>
             </div>
         </div>
+
+
     </div>
 
 </main>
