@@ -27,7 +27,7 @@ class SqlQuarrys
 
     public static function GetRoomsByKafName($kafName)
     {
-        return "SELECT * FROM room WHERE kafedra_id IN ( SELECT id_kafedra FROM kafedra WHERE name_kafedra LIKE '%$kafName%' );";
+        return "SELECT * FROM room WHERE kafedra_id IN (SELECT id_kafedra FROM kafedra WHERE name_kafedra='$kafName');";
     }
 
     public static function GetRoomsByBoxName($box)
@@ -57,6 +57,27 @@ class SqlQuarrys
     public static function removeRoomImages($roomIUrl)
     {
         return "DELETE FROM room_images WHERE url='$roomIUrl';";
+    }
+
+    public static  function getAllKafedraNames()
+    {
+        return "SELECT name_kafedra FROM kafedra;";
+    }
+
+    //из табдицы с информацией достать всю информацию по комнате
+    public static function getRoomSpecificationsRoomId($roomId)
+    {
+        return "
+            SELECT rs.name AS spi_label, ri.value AS inf_value
+            FROM room_information ri
+            JOIN room_specifications rs ON ri.specify_id = rs.id
+            WHERE ri.room_id = $roomId;
+            ";
+    }
+
+    public static function getSpiList()
+    {
+        return "SELECT id, name FROM room_specifications";
     }
 
 }

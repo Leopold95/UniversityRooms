@@ -6,18 +6,25 @@ $useSearch = $_POST["useSearch"] ?? false;
 
 $database = new DataBase();
 
-if($useSearch == false){
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     baseGeneration($database);
 }
+//} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//    // handle POST request
+//}
+//
+//if($useSearch == false){
+//    baseGeneration($database);
+//}
 else {
     $roomNumber = $_POST["roomNum"];
-    $kafedraTxt = $_POST["kafedraTxt"];
+    $kafedra = $_POST["kafedra"];
     $boxTxt = $_POST["box"];
 
     $globalList = array();
 
     //room number search
-    if($roomNumber != null || $roomNumber != ""){
+    if($roomNumber != ""){
         $roomsByNumber = $database->GetRoomsByNumber($roomNumber);
         if($roomsByNumber == null)
             return;
@@ -32,9 +39,11 @@ else {
         }
     }
 
+
     //room box search
-    if($boxTxt!= null || $boxTxt != ""){
+    if($boxTxt != "-1"){
         $roomsByBox = $database->GetRoomsByBox($boxTxt);
+
         if($roomsByBox == null)
             return;
 
@@ -48,9 +57,11 @@ else {
         }
     }
 
+
+
     //room kafedra search
-    if ($kafedraTxt != null || $kafedraTxt != ""){
-        $roomsByKafedra = $database->GetRoomsByKafedraName($kafedraTxt);
+    if ($kafedra != "-1"){
+        $roomsByKafedra = $database->GetRoomsByKafedraName($kafedra);
         foreach($roomsByKafedra as $roomm) {
             if($roomm == null){
                 break;
@@ -60,6 +71,7 @@ else {
                 $globalList[$roomm->id_room] = $roomm;
         }
     }
+
 
     //check empty search
     if(!$globalList)

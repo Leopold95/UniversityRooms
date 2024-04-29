@@ -5,9 +5,9 @@ use scripts\DataBase;
 $database = new DataBase();
 $roomId = $_GET["roomid"];
 
-$room = $database->GetRoomById($roomId);
 $kafedra = $database->GetKafedraById($database->GetKafedraIdIntoRoom($roomId));
 $images = $database->GetRoomImages($roomId);
+$spis = $database->GetRoomSpecifications($roomId);
 ?>
 
 
@@ -73,57 +73,28 @@ include ("pages/shared/header.php");
     <div class="row">
         <div class="col">
             <table>
-                <tr>
-                    <th>Корпус</th>
-                    <td><?php echo $room->box;?></td>
-                </tr>
-                <tr>
-                    <th>Кабінет</th>
-                    <td><?php echo $room->number_room;?></td>
-                </tr>
-                <tr>
-                    <th>Кафедра</th>
-                    <td><?php echo $kafedra->name_kafedra?></td>
-                </tr>
-                <tr>
-                    <th>Місткість</th>
-                    <td><?php echo $room->capacity;?></td>
-                </tr>
-                <tr>
-                    <th>Розмір</th>
-                    <td><?php echo $room->area;?></td>
-                </tr>
-                <tr>
-                    <th>Призначення</th>
-                    <td><?php echo $room->specialization;?></td>
-                </tr>
-                <tr>
-                    <th>Інформація</th>
-                    <td><?php echo $room->Inform;?></td>
-                </tr>
-                <tr>
-                    <th>Копус</th>
-                    <td><?php echo $room->Korp;?></td>
-                </tr>
-                <tr>
-                    <th>Educational</th>
-                    <td><?php echo $room->educational;?></td>
-                </tr>
-                <tr>
-                    <th>Deleted</th>
-                    <td><?php echo $room->deleted;?></td>
-            </tr>
+                <?php
+                foreach ($spis as $spi) {
+                    if($spi->inf_value == null){
+                        continue;
+                    }
+
+                    echo "<tr>";
+                        echo "<th>".$spi->spi_label."</th>";
+                        echo "<td>".$spi->inf_value."</td>";
+                    echo " </tr>";
+                }
+                ?>
             </table>
         </div>
         <!-- room image preview -->
-        <div class="col d-flex align-items-center justify-content-center flex-column">
+        <div class="col d-flex align-items-center flex-column">
             <!-- default preview of forst image into array -->
             <img class="img-preview" src="<?php echo $images[0] ?? "";?>" id="roomPreview">
-            <div>
-                <button type="button" value="<?php echo $room->id_room?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>
+            <div class="mt-2">
+                <button type="button" value="<?php echo $roomId?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Видалити фото</button>
             </div>
-
         </div>
 
 
@@ -139,10 +110,7 @@ include ("pages/shared/header.php");
                 </div>
             </div>
         </div>
-
-
     </div>
-
 </main>
 
 <?php

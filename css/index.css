@@ -1,0 +1,46 @@
+main{
+    background: #b2dcff;
+}
+
+.btn-search{
+    background-color: white;
+
+}
+
+.row-color{
+    background: #8CB5E2;
+    border-radius: 4px;
+}
+
+.row-color:hover{
+    cursor: pointer;
+}
+
+.btn-colour{
+    background-color: rgb(8, 66, 152);
+    color:  rgb(8, 66, 152);
+}
+
+.back-colour{
+
+}
+
+.btn-roomline{
+    background-color: rgb(61, 139, 253);
+    color: black;
+    border-radius: 4px;
+
+    border-color: rgb(61, 139, 253);
+
+    box-shadow: 0 0 0 0;
+}
+
+.room-short-info-row{
+    background: rgb(152, 189, 237);
+    /*box-shadow: 0px 0px 0px 0.5px rgba(0, 0, 0, 0.5);*/
+    border-radius: 6px;
+    border: 1px solid black;
+    padding: 4px;
+    margin-top: 4px;
+
+}

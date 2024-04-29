@@ -5,11 +5,13 @@ require (__DIR__ . "/../entity/KafedraEntity.php");
 require (__DIR__ . "/../entity/RoomEntity.php");
 require (__DIR__ . "/../entity/RoomInformationEntity.php");
 require (__DIR__ . "/../entity/RoomSpecificationsEntity.php");
+require (__DIR__ . "/../entity/ShortRoomSpecificationEntity.php");
 require (__DIR__ . "/../scripts/ConnectionInfo.php");
 require (__DIR__ . "/../scripts/SqlQuarrys.php");
 
 use entity\KafedraEntity;
 use entity\RoomEntity;
+use entity\ShortRoomSpecificationEntity;
 use Exception;
 use mysqli;
 
@@ -37,9 +39,25 @@ class DataBase
             $this->connection->close();
     }
 
-    public function GetKafedras()
+    public function GetKafedraNames() : array
     {
+        $kafedrasNames = array();
 
+        try{
+            $result = $this->connection->query(SqlQuarrys::getAllKafedraNames());
+
+            if($result->num_rows <= 0)
+                return  $kafedrasNames;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                array_push($kafedrasNames, $row["name_kafedra"]);
+            }
+        }
+        catch (Exception $e){
+            return $kafedrasNames;
+        }
+
+        return $kafedrasNames;
     }
 
     public function GetRooms()
@@ -319,8 +337,54 @@ class DataBase
         return  false;
     }
 
-    public function  GetSpecifications()
+    //updated
+    public function GetRoomSpecifications($roomId)
     {
+        $spiList = array();
 
+        try{
+            $result = $this->connection->query(SqlQuarrys::getRoomSpecificationsRoomId($roomId));
+
+            if($result->num_rows <= 0)
+                return $spiList;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                $ent = new ShortRoomSpecificationEntity();
+                $ent->spi_label = $row["spi_label"];
+                $ent->inf_value = $row["inf_value"];
+                array_push($spiList, $ent);
+            }
+        }
+        catch (Exception $e){
+            return $spiList;
+        }
+
+        return $spiList;
+    }
+
+    public function GetSpecifications()
+    {
+        $spiList = array();
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::getSpiList());
+
+            if($result->num_rows <= 0)
+                return $spiList;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                //$spiList[$row["id"]] = $row["name"];
+                $info = array(
+                    "id" => $row["id"],
+                    "value" => $row["name"]
+                );
+                array_push($spiList, $info);
+            }
+        }
+        catch (Exception $e){
+            return $spiList;
+        }
+
+        return $spiList;
     }
 }

@@ -1,3 +1,3 @@
-<header class="">
-    <h1>header</h1>
+<header >
+    <h1>Довідник аудиторій </h1>
 </header>

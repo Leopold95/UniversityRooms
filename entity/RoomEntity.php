@@ -20,6 +20,9 @@ class RoomEntity
     public $photo_url;
     public $deleted;
 
+    //information from another table
+    public $information;
+
     public function getInfo() {
         return "[Room(
           ID: $this->id_room,

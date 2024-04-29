@@ -17,8 +17,10 @@ tr:nth-child(even) {
 }
 
 .img-preview{
-    height: 25em;
-    width: 35em ;
+    /*height: 25em;*/
+    /*width: 35em ;*/
+    height: 100%;
+    width: 100%;
 }
 
 .img-small{
@@ -40,22 +42,21 @@ tr:nth-child(even) {
 
 @media (max-width: 750px) {
     .img-preview{
-        height: 10em;
-        width: 20em ;
+        /*height: 10em;*/
+        /*width: 20em ;*/
     }
 }
 
 @media (max-width: 540px) {
     .img-preview{
-        height: 10em;
-        width: 20em ;
+        /*height: 10em;*/
+        /*width: 20em ;*/
     }
 }
 @media (max-width: 320px) {
     .img-preview{
 
-        height: 5em;
-        width: 15em ;
+        /*height: 5em;*/
+        /*width: 15em ;*/
     }
 }
-
