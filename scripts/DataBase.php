@@ -402,4 +402,24 @@ class DataBase
             return false;
         }
     }
+    public function customUpdate($qrr): bool
+    {
+        try{
+            $result = $this->connection->query($qrr);
+            return true;
+        }
+        catch (Exception $e){
+            return false;
+        }
+    }
+    public function customInsert($qrr): bool
+    {
+        try{
+            $result = $this->connection->query($qrr);
+            return true;
+        }
+        catch (Exception $e){
+            return false;
+        }
+    }
 }

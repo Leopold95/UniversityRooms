@@ -3,23 +3,22 @@ require (__DIR__."/scripts/DataBase.php");
 
 $database = new \scripts\DataBase();
 
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $roomId =  $_POST["roomId"];
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $rooms = json_decode($_POST["roomInfoArr"]);
-    $specifications = json_decode($_POST["spicifyArr"]);
-    $globalParams = json_decode($_POST["globalParamArr"]);
-    $romid = 0;
+    if($roomId == "")
+        die();
 
-    //получение ид комнаты отдельно от всех остальных парметров
-    foreach ($globalParams as $param) {
-        if($param->global_param == "global_id_room"){
-            $romid = $param->value;
-            break;
-        }
+    if($_POST["add"] === "room"){
+        $roomFields = json_decode($_POST["roomInfoArr"]);
+        $roomResult = insertOrUpdateRoom($roomFields, $database, $roomId);
+        echo $roomResult;
+    }elseif ($_POST["add"] === "specefic"){
+        $specifications = json_decode($_POST["spicifyArr"]);
+        $spiResult = insertOrUpdateRoomSpecifications($specifications, $roomId, $database);
+        echo json_encode($spiResult);
     }
 
-    $roomResult = insertOrUpdateRoom($rooms, $database);
-    insertOrUpdateRoomSpecifications($specifications, $romid, $database);
 
     die();
 }
@@ -43,6 +42,13 @@ include ("pages/shared/header.php");
 ?>
 
 <main class="container-fluid">
+    <h3>Ідентифікатор</h3>
+    <table>
+        <tr>
+            <th>Room id</th>
+            <td><input id="#id_room"/></td>
+        </tr>
+    </table>
     <table>
         <h3>Аудиторія</h3>
         <tr>
@@ -62,14 +68,11 @@ include ("pages/shared/header.php");
             <td><input name="room_deleted"/></td>
         </tr>
     </table>
+    <button name="addRoom">Додати аудиторію</button>
 
     <h3>Спецефікації</h3>
 
     <table>
-        <tr>
-            <th>Room id</th>
-            <td><input name="global_id_room"/></td>
-        </tr>
         <?php
         $listValues = $database->GetSpecifications();
         foreach($listValues as $spi){
@@ -81,7 +84,7 @@ include ("pages/shared/header.php");
         ?>
     </table>
 
-    <button name="addRoom">Додати аудиторію</button>
+    <button name="addSpecefications">Додати Індормацію</button>
 </main>
 
 <?php
@@ -92,58 +95,99 @@ include ("pages/shared/footer.php");
 
 <?php
 
-function insertOrUpdateRoom(&$rooms, &$database) : bool
+function insertOrUpdateRoom(&$roomFields, &$database, &$roomId)
 {
-    $roomsSql = "INSERT INTO room (";
+    $qrrCheckSelect = "SELECT id_room FROM room WHERE id_room=$roomId";
+    $isExists = $database->customExistmentWithResult($qrrCheckSelect);
 
-    foreach ($rooms as $room){
-        $param = substr($room->room_param, 5);
+    if($isExists == true){
+        $roomSql = "UPDATE room SET ";
 
-        if($room == end($rooms)){
-            $roomsSql .= $param;
-            continue;
+        foreach ($roomFields as $field){
+            $param = substr($field->room_param, 5);
+
+            if($field == end($roomFields)){
+                $roomSql .= $param."="."'".$field->value."'";
+                continue;
+            }
+
+            $roomSql .= $param."="."'".$field->value."',";
         }
 
-        $roomsSql .=  $param.",";
-    }
+        $roomSql .= " WHERE id_room=$roomId";
 
-    $roomsSql .= ") VALUES (";
-    foreach ($rooms as $room){
-        if($room == end($rooms)){
-            $roomsSql .= "'".$room->value."'";
-            continue;
-        }
-        $roomsSql .= "'".$room->value."',";
-    }
-    $roomsSql .= ");";
-
-    return $database->customExistmentWithResult($roomsSql);
-}
-
-function insertOrUpdateRoomSpecifications(&$specifications, &$romid, &$database)
-{
-    foreach ($specifications as $spi){
-        $param = substr($spi->spi_param, 4);
-        $sql = "INSERT INTO room_information (room_id, specify_id, value) VALUES (";
-        $sql .= "'".$romid."',";
-        $sql .= "'".$param."',";
-        $sql .= "'".$spi->value."');";
-
-        if($database->customExistmentWithResult(checkIfExists($romid, $param)) == true){
-            $qrr = "UPDATE room_information SET value='$spi->value' WHERE room_id=$romid AND specify_id=$param";
-            if($database->customExistmentWithResult($qrr))
-                echo "Dani onovleno";
+        if($database->customInsert($roomSql)){
+            return json_encode([$roomId => "update room succsessfull"], JSON_UNESCAPED_UNICODE);
         }
         else{
-            $database->customExistmentWithResult($sql);
-            echo "Dani dodano";
+            return json_encode([$roomId => "update room error"], JSON_UNESCAPED_UNICODE);
+        }
+    }
+    else{
+        $roomsSql = "INSERT INTO room (";
+
+        foreach ($roomFields as $room){
+            $param = substr($room->room_param, 5);
+
+            if($room == end($roomFields)){
+                $roomsSql .= $param;
+                continue;
+            }
+
+            $roomsSql .=  $param.",";
+        }
+
+        $roomsSql .= ") VALUES (";
+        foreach ($roomFields as $room){
+            if($room == end($roomFields)){
+                $roomsSql .= "'".$room->value."'";
+                continue;
+            }
+            $roomsSql .= "'".$room->value."',";
+        }
+        $roomsSql .= ");";
+
+        //AREA FILED WICH NOT USED
+
+        if($database->customInsert($roomsSql)){
+            return json_encode([$roomId => "insert room succsessfull"], JSON_UNESCAPED_UNICODE);
+        }
+        else{
+            return json_encode([$roomId => "insert room error"], JSON_UNESCAPED_UNICODE);
         }
     }
 }
-function checkIfExists($roomId, $spiId):string
-{
-    return "SELECT * FROM room_information WHERE room_id=$roomId AND specify_id=$spiId;";
 
+function insertOrUpdateRoomSpecifications(&$specifications, &$romid, &$database): array
+{
+    $arr = array();
+    foreach ($specifications as $spi){
+        $param = substr($spi->spi_param, 4);
+
+        //if this spi exists into db
+        if($database->customExistmentWithResult(checkIfExists($romid, $param)) == true){
+            $qrr = "UPDATE room_information SET value='$spi->value' WHERE room_id=$romid AND specify_id=$param";
+
+            if($database->customUpdate($qrr) == true){
+                $arr[$spi->spi_param] = "updated";
+            }
+            else{
+                $arr[$spi->spi_param] = "error updating";
+            }
+        }
+        else{
+            $sql = "INSERT INTO room_information (room_id, specify_id, value) VALUES (";
+            $sql .= "'".$romid."',";
+            $sql .= "'".$param."',";
+            $sql .= "'".$spi->value."');";
+            if($database->customInsert($sql) == true)
+                $arr[$spi->spi_param] = "created";
+            else
+                $arr[$spi->spi_param] = "error inserting";
+        }
+    }
+
+    return $arr;
 }
 ?>
 
