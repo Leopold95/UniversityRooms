@@ -12,10 +12,6 @@ main{
     border-radius: 4px;
 }
 
-.row-color:hover{
-    cursor: pointer;
-}
-
 .btn-colour{
     background-color: rgb(8, 66, 152);
     color:  rgb(8, 66, 152);

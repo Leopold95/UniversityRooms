@@ -8,9 +8,9 @@
                 <a><?php echo $block_number_room;?></a>
             </div>
             <div class="col text-center">
-                <a><strong>Призначення: </strong></a>
+                <a><strong>Корпус: </strong></a>
                 <br>
-                <a><?php echo $block_specialization;?></a>
+                <a><?php echo $block_korp;?></a>
             </div>
             <div class="col text-center">
                 <a><strong>Кафедра: </strong></a>
@@ -23,7 +23,7 @@
         </div>
 
         <!--Short room information-->
-        <div class="pb-2" id="information_<?php echo $block_room_id;?>"></div>
+<!--        <div class="pb-2" id="information_--><?php //echo $block_room_id;?><!--"></div>-->
     </div>
 </div>
 

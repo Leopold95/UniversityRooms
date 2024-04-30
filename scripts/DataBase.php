@@ -387,4 +387,19 @@ class DataBase
 
         return $spiList;
     }
+
+    public function customExistmentWithResult($qrr): bool
+    {
+        try{
+            $result = $this->connection->query($qrr);
+
+            if($result->num_rows <= 0)
+                return false;
+            else
+                return true;
+        }
+        catch (Exception $e){
+            return false;
+        }
+    }
 }

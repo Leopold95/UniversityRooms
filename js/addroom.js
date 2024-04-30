@@ -1,27 +1,33 @@
 $(document).on('click', "button[name=addRoom]", (function(){
-    let roomInfos = document.querySelectorAll('input[name^=room]')
+    let roomInfos = document.querySelectorAll('input[name^=room_]')
     let spiInfos = document.querySelectorAll('input[name^=spi_]')
+    let globalParams = document.querySelectorAll('input[name^=global_]')
 
     const roomArr = [];
-    const spiArr = [];
-
     roomInfos.forEach((el) => {
-        let data = {room_param: el.name, value: el.value}
-        roomArr.push(data)
-        console.log(data)
+        roomArr.push({room_param: el.name, value: el.value});
     });
 
+    const spiArr = [];
     spiInfos.forEach((el) => {
-        let data = {spi_param: el.name, value: el.value}
-        spiArr.push(data)
-        console.log(data)
+        spiArr.push({spi_param: el.name, value: el.value});
+    });
+
+    const globalParamsArr = [];
+    globalParams.forEach((el) => {
+        globalParamsArr.push({global_param: el.name, value: el.value})
     });
 
     $.ajax({
-        url: "",
-        type: 'post',
+        url: "addroom.php",
+        type: 'POST',
+        data: {
+            roomInfoArr: JSON.stringify(roomArr),
+            spicifyArr: JSON.stringify(spiArr),
+            globalParamArr: JSON.stringify(globalParamsArr)
+        },
         success: function(response) {
-
+            console.log(response)
         }
     });
 }));

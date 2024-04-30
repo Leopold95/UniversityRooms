@@ -9,13 +9,6 @@ $database = new DataBase();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     baseGeneration($database);
 }
-//} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//    // handle POST request
-//}
-//
-//if($useSearch == false){
-//    baseGeneration($database);
-//}
 else {
     $roomNumber = $_POST["roomNum"];
     $kafedra = $_POST["kafedra"];
@@ -81,7 +74,7 @@ else {
     foreach ($globalList as $room) {
         $block_number_room = $room->number_room;
         $block_room_id = $room->id_room;
-        $block_specialization = $room->specialization;
+        $block_korp = $room->box;
         $block_kafName = $database->GetKafedraNameById($room->kafedra_id);
         require (__DIR__ . "/../../pages/parts/roomline.php");
     }
@@ -94,7 +87,7 @@ function baseGeneration($database)
     foreach ($roomsByNumber as $room) {
         $block_number_room = $room->number_room;
         $block_room_id = $room->id_room;
-        $block_specialization = $room->specialization;
+        $block_korp = $room->box;
         $block_kafName = $database->GetKafedraNameById($room->kafedra_id);
         require (__DIR__ . "/../../pages/parts/roomline.php");
     }
