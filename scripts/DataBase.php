@@ -39,6 +39,7 @@ class DataBase
             $this->connection->close();
     }
 
+    //returns all kadefra names
     public function GetKafedraNames() : array
     {
         $kafedrasNames = array();
@@ -60,6 +61,7 @@ class DataBase
         return $kafedrasNames;
     }
 
+    //returns all rooms
     public function GetRooms()
     {
         $arrRooms = array();
@@ -93,6 +95,7 @@ class DataBase
         return $arrRooms;
     }
 
+    //returns room by id
     public function GetRoomById($id):RoomEntity
     {
         $room = new RoomEntity();
@@ -123,6 +126,7 @@ class DataBase
         return $room;
     }
 
+    //returns rooms by its number
     public function GetRoomsByNumber($number)
     {
         $arrRooms = array();
@@ -156,6 +160,7 @@ class DataBase
         return $arrRooms;
     }
 
+    //returns rooms by its kafedra name
     public function GetRoomsByKafedraName($kafedraName)
     {
         $arrRooms = array();
@@ -189,6 +194,7 @@ class DataBase
         return $arrRooms;
     }
 
+    //returns rooms by its box
     public function GetRoomsByBox($box)
     {
         $arrRooms = array();
@@ -222,6 +228,7 @@ class DataBase
         return $arrRooms;
     }
 
+    //returns kafedra name by its id
     public function  GetKafedraNameById($id): string
     {
         $kafedra = "";
@@ -244,6 +251,7 @@ class DataBase
         return $kafedra;
     }
 
+    //returns kafedra ent name by its id
     public function  GetKafedraById($id): KafedraEntity
     {
         $kafedra = new KafedraEntity();
@@ -290,6 +298,7 @@ class DataBase
         }
     }
 
+    //returns all room images by id
     public function GetRoomImages($roomId)
     {
         $roomImages = array();
@@ -311,6 +320,7 @@ class DataBase
         return $roomImages;
     }
 
+    //creats rom image by room id and image url
     public function AddRoomImage($roomId, $pickUrl) : bool
     {
         try{
@@ -324,6 +334,7 @@ class DataBase
         return  false;
     }
 
+    //removes rom image by its id
     public function RemoveRoomImage($imgUrl) : bool
     {
         try{
@@ -337,7 +348,7 @@ class DataBase
         return  false;
     }
 
-    //updated
+    //returns all specifications of the room by id
     public function GetRoomSpecifications($roomId)
     {
         $spiList = array();
@@ -362,6 +373,7 @@ class DataBase
         return $spiList;
     }
 
+    //returns all avaliable specifications
     public function GetSpecifications()
     {
         $spiList = array();
@@ -388,6 +400,7 @@ class DataBase
         return $spiList;
     }
 
+    //check if line exists into database
     public function customExistmentWithResult($qrr): bool
     {
         try{
@@ -402,20 +415,29 @@ class DataBase
             return false;
         }
     }
+
+    //simple update stmt with result
     public function customUpdate($qrr): bool
     {
         try{
             $result = $this->connection->query($qrr);
+
+            if(!$result)
+                return false;
             return true;
         }
         catch (Exception $e){
             return false;
         }
     }
+
+    //simple insert stmt with result
     public function customInsert($qrr): bool
     {
         try{
             $result = $this->connection->query($qrr);
+            if(!$result)
+                return false;
             return true;
         }
         catch (Exception $e){

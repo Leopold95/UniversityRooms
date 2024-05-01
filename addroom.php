@@ -164,8 +164,10 @@ function insertOrUpdateRoomSpecifications(&$specifications, &$romid, &$database)
     foreach ($specifications as $spi){
         $param = substr($spi->spi_param, 4);
 
+        $sqlExists =  "SELECT id FROM room_information WHERE room_id=$romid AND specify_id=$param";
+
         //if this spi exists into db
-        if($database->customExistmentWithResult(checkIfExists($romid, $param)) == true){
+        if($database->customExistmentWithResult($sqlExists) == true){
             $qrr = "UPDATE room_information SET value='$spi->value' WHERE room_id=$romid AND specify_id=$param";
 
             if($database->customUpdate($qrr) == true){
