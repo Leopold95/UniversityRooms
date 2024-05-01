@@ -80,3 +80,12 @@ $(document).on('click', "button[name=removeImageApplayed]", (function(){
         }
     });
 }));
+
+
+$(document).on('click', "button[name=prevRoom]", (function(){
+
+}));
+
+$(document).on('click', "button[name=nextRoom]", (function(){
+
+}));

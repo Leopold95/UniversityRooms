@@ -28,7 +28,6 @@ $spis = $database->GetRoomSpecifications($roomId);
 include ("pages/shared/header.php");
 ?>
 
-
 <!--modal adding image window-->
 <div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImageModal" aria-hidden="true">
     <div class="modal-dialog">
@@ -69,9 +68,18 @@ include ("pages/shared/header.php");
     </div>
 </div>
 
-<main class="container-fluid">
+<main class="container-fluid pb-2">
     <div class="row">
-        <div class="col">
+        <div class="col  mt-2 d-flex justify-content-start">
+            <button name="prevRoom">Prev</button>
+        </div>
+        <div class="col  mt-2 d-flex justify-content-end">
+            <button name="nextRoom">Next</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col mt-2">
             <table>
                 <?php
                 foreach ($spis as $spi) {
@@ -87,27 +95,26 @@ include ("pages/shared/header.php");
                 ?>
             </table>
         </div>
-        <!-- room image preview -->
-        <div class="col d-flex align-items-center flex-column">
-            <!-- default preview of forst image into array -->
-            <img class="img-preview" src="<?php echo $images[0] ?? "";?>" id="roomPreview">
-            <div class="mt-2">
-                <button type="button" value="<?php echo $roomId?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Видалити фото</button>
-            </div>
-        </div>
 
-
-        <!-- scrollable rooms images list  -->
-        <div class="container mt-2 testimonial-group d-flex justify-content-center">
+        <div class="col mt-2">
+            <!-- room image preview -->
             <div class="row">
-                <div class="col ">
-                    <?php
-                    foreach ($images as $image){
-                        echo "<img class='img-small idClickableSmallRoomPreview' src='$image'/>";
-                    }
-                    ?>
-                </div>
+                    <!-- default preview of forst image into array -->
+                    <img class="img-preview" src="<?php echo $images[0] ?? "";?>" id="roomPreview">
+
+                    <div class="mt-2 d-flex justify-content-center">
+                        <button type="button" value="<?php echo $roomId?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Видалити фото</button>
+                    </div>
+            </div>
+
+            <!-- scrollable rooms images list  -->
+            <div class="row flex-nowrap overflow-auto mt-2">
+                <?php
+                foreach ($images as $image){
+                    echo "<img class='img-small idClickableSmallRoomPreview' src='$image'/>";
+                }
+                ?>
             </div>
         </div>
     </div>
