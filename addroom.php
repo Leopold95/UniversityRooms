@@ -1,27 +1,19 @@
 <?php
 require (__DIR__."/scripts/DataBase.php");
 
-$database = new \scripts\DataBase();
-
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $roomId =  $_POST["roomId"];
+    $roomFields = json_decode($_POST["roomInfoArr"]);
+    $specifications = json_decode($_POST["spiInfoArr:"]);
 
-    if($roomId == "")
-        die();
+    echo json_encode(["status" => "error", "message" => "Room id is required"]);
 
-    if($_POST["add"] === "room"){
-        $roomFields = json_decode($_POST["roomInfoArr"]);
-        $roomResult = insertOrUpdateRoom($roomFields, $database, $roomId);
-        echo $roomResult;
-    }elseif ($_POST["add"] === "specefic"){
-        $specifications = json_decode($_POST["spicifyArr"]);
-        $spiResult = insertOrUpdateRoomSpecifications($specifications, $roomId, $database);
-        echo json_encode($spiResult);
-    }
 
 
     die();
 }
+
+$database = new \scripts\DataBase();
+$kafNamsList = $database->GetKafedraNames();
 ?>
 
 <!doctype html>
@@ -41,50 +33,79 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 include ("pages/shared/header.php");
 ?>
 
+<div class="modal fade" id="feildsNotFileldModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Оде або декілько полів не заповнені</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label id="idNotFiledText"></label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <main class="container-fluid">
-    <h3>Ідентифікатор</h3>
+    <h3>Аудиторія</h3>
     <table>
-        <tr>
-            <th>Room id</th>
-            <td><input id="#id_room"/></td>
-        </tr>
-    </table>
-    <table>
-        <h3>Аудиторія</h3>
         <tr>
             <th>Box</th>
-            <td><input name="room_box"/></td>
+            <td>
+                <select id="idSelectBox" class="form-select markHandleChangesBox" aria-label="Default select example">
+                    <option selected value="-1">Оберіть Корпус</option>
+                    <option value="А">А</option>
+                    <option value="Б">Б</option>
+                    <option value="В">В</option>
+                    <option value="Г">Г</option>
+                    <option value="Д">Д</option>
+                    <option value="Е">Е</option>
+                    <option value="Дв">Дв</option>
+                    <option value="Т">Т</option>
+                </select>
+            </td>
         </tr>
         <tr>
             <th>Room number</th>
-            <td><input name="room_nomber_room"/></td>
+            <td><input name="room_nomber_room" class="form-control"/></td>
         </tr>
         <tr>
             <th>Kafedra id</th>
-            <td><input name="room_kafedra_id"/></td>
+            <td>
+                <select id="idSelectKafedra" class="form-select markHandleChangesKaf" aria-label="Default select example">
+                    <option selected value="-1">Оберіть кафедру</option>
+                    <?php
+                    foreach ($kafNamsList as $kafNam) {
+                        echo "<option value='$kafNam'>$kafNam</option>";
+                    }
+                    ?>
+                </select>
+            </td>
         </tr>
         <tr>
             <th>Deleted</th>
-            <td><input name="room_deleted"/></td>
+            <td><input type="checkbox" name="room_deleted"/></td>
         </tr>
     </table>
-    <button name="addRoom">Додати аудиторію</button>
 
     <h3>Спецефікації</h3>
-
     <table>
         <?php
         $listValues = $database->GetSpecifications();
         foreach($listValues as $spi){
             echo "<tr>";
                 echo "<th>".$spi["value"]."</th>";
-                echo "<td><input name="."spi_".$spi["id"]."></td>";
+                echo "<td><input class='form-control' name="."spi_".$spi["id"]."></td>";
             echo "</tr>";
         }
         ?>
     </table>
 
-    <button name="addSpecefications">Додати Індормацію</button>
+    <button name="addRoom">Додати Аудиторію</button>
 </main>
 
 <?php
@@ -94,6 +115,55 @@ include ("pages/shared/footer.php");
 </html>
 
 <?php
+
+function generateRoomsSql(&$roomFields): string
+{
+    $roomsSql = "INSERT INTO room (";
+
+    foreach ($roomFields as $room){
+        $param = substr($room->room_param, 5);
+
+        if($room == end($roomFields)){
+            $roomsSql .= $param;
+            continue;
+        }
+
+        $roomsSql .=  $param.",";
+    }
+
+    $roomsSql .= ") VALUES (";
+    foreach ($roomFields as $room){
+        if($room == end($roomFields)){
+            $roomsSql .= "'".$room->value."'";
+            continue;
+        }
+        $roomsSql .= "'".$room->value."',";
+    }
+    $roomsSql .= ");";
+    return $roomsSql;
+}
+
+function generateSpeceficationSqls(&$specifications, &$romid): array
+{
+    $spiInsertSqlList = array();
+    foreach ($specifications as $spi){
+        $spi_id = substr($spi->spi_param, 4);
+
+        $sql = "INSERT INTO room_information (room_id, specify_id, value) VALUES (";
+        $sql .= "'".$romid."',";
+        $sql .= "'".$spi_id."',";
+        $sql .= "'".$spi->value."');";
+
+        $spiInsertSqlList[] = $sql;
+    }
+    return $spiInsertSqlList;
+}
+
+function createTransActionSql($insertRoomSql, $speceficationSqlList): string
+{
+
+    return "";
+}
 
 function insertOrUpdateRoom(&$roomFields, &$database, &$roomId)
 {
