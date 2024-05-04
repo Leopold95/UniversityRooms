@@ -13,9 +13,6 @@ $(document).ready(function (){
 
 //show short details on the row clicked
 $(document).on("click", ".info-row", (function (){
-    //console.log();
-
-
     var roomId = $(this).attr("data-value");
     var tag = "#information_" + roomId;
 
@@ -73,7 +70,7 @@ function search(){
     }
 
     $.ajax({
-        url: "pages/parts/roomsloader.php",
+        url: "scripts/roomsloader.php",
         type: 'POST',
         data: {
             useSearch: true,
@@ -89,7 +86,7 @@ function search(){
 
 function defaultSearch(){
     $.ajax({
-        url: "pages/parts/roomsloader.php",
+        url: "scripts/roomsloader.php",
         type: 'GET',
         success: function(response) {
             $("#mainRoomsListBlock").html(response);

@@ -3,6 +3,40 @@ var currentRoomImagePreview = "";
 //initialize room previw image after page loaded
 $(document).ready(function (){
     currentRoomImagePreview = $(".idClickableSmallRoomPreview").attr("src");
+
+    $.ajax({
+        url: "scripts/pagesSwapper.php",
+        type: 'POST',
+        data: {
+            action: "advancedinfo_prevRoom",
+            currentBox: localStorage.getItem("currentRoomBox"),
+            currentNum: localStorage.getItem("currentRoomNum")
+        },
+        success: function(response) {
+            //the prev room has been found
+            if(response === "-1"){
+                $("button[name=prevRoom]").hide();
+            }
+            //console.log(response)
+        }
+    });
+
+    $.ajax({
+        url: "scripts/pagesSwapper.php",
+        type: 'POST',
+        data: {
+            action: "advancedinfo_nextRoom",
+            currentBox: localStorage.getItem("currentRoomBox"),
+            currentNum: localStorage.getItem("currentRoomNum")
+        },
+        success: function(response) {
+            //the prev room has been found
+            if(response === "-1"){
+                $("button[name=nextRoom]").hide();
+            }
+            //console.log(response)
+        }
+    });
 });
 
 //short room photo preview clicked
@@ -83,9 +117,39 @@ $(document).on('click', "button[name=removeImageApplayed]", (function(){
 
 
 $(document).on('click', "button[name=prevRoom]", (function(){
-
+    $.ajax({
+        url: "scripts/pagesSwapper.php",
+        type: 'POST',
+        data: {
+            action: "advancedinfo_prevRoom",
+            currentBox: localStorage.getItem("currentRoomBox"),
+            currentNum: localStorage.getItem("currentRoomNum")
+        },
+        success: function(response) {
+            //the prev room has been found
+            if(response !== "-1"){
+                window.location.href = "advancedinfo.php?roomid="+response;
+            }
+            //console.log(response)
+        }
+    });
 }));
 
 $(document).on('click', "button[name=nextRoom]", (function(){
-
+    $.ajax({
+        url: "scripts/pagesSwapper.php",
+        type: 'POST',
+        data: {
+            action: "advancedinfo_nextRoom",
+            currentBox: localStorage.getItem("currentRoomBox"),
+            currentNum: localStorage.getItem("currentRoomNum")
+        },
+        success: function(response) {
+            //the next room has been found
+            //console.log(response)
+            if(response !== "-1"){
+                window.location.href = "advancedinfo.php?roomid="+response;
+            }
+        }
+    });
 }));

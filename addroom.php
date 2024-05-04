@@ -1,18 +1,24 @@
 <?php
 require (__DIR__."/scripts/DataBase.php");
 
+$database = new \scripts\DataBase();
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $roomFields = json_decode($_POST["roomInfoArr"]);
-    $specifications = json_decode($_POST["spiInfoArr:"]);
+    $specifications = json_decode($_POST["spiInfoArr"]);
+    $roomFields = json_decode($_POST["roomFieldJson"]);
 
-    echo json_encode(["status" => "error", "message" => "Room id is required"]);
+    $room_sql = generateRoomsSql($roomFields, $database);
+    $spices_sql = generateSpeceficationSql($specifications);
+    $qrr =  getSqlToInsert($room_sql, $spices_sql);
 
-
+    echo $qrr;
+    $result = $database->insertWithResult($qrr);
+    echo json_encode(["result" => $result], JSON_UNESCAPED_UNICODE);
 
     die();
 }
 
-$database = new \scripts\DataBase();
+
 $kafNamsList = $database->GetKafedraNames();
 ?>
 
@@ -51,6 +57,7 @@ include ("pages/shared/header.php");
 </div>
 
 <main class="container-fluid">
+    <label id="roomInsertingResult"></label>
     <h3>Аудиторія</h3>
     <table>
         <tr>
@@ -71,7 +78,7 @@ include ("pages/shared/header.php");
         </tr>
         <tr>
             <th>Room number</th>
-            <td><input name="room_nomber_room" class="form-control"/></td>
+            <td><input type="number" id="idRoomNumber" name="room_nomber_room" class="form-control"/></td>
         </tr>
         <tr>
             <th>Kafedra id</th>
@@ -88,7 +95,7 @@ include ("pages/shared/header.php");
         </tr>
         <tr>
             <th>Deleted</th>
-            <td><input type="checkbox" name="room_deleted"/></td>
+            <td><input type="checkbox"  id="idRoomDeleted" name="room_deleted"/></td>
         </tr>
     </table>
 
@@ -116,150 +123,38 @@ include ("pages/shared/footer.php");
 
 <?php
 
-function generateRoomsSql(&$roomFields): string
+function getSqlToInsert($room, $spices): string
 {
-    $roomsSql = "INSERT INTO room (";
+    return "START TRANSACTION;$room SET @last_insert_id = LAST_INSERT_ID();$spices COMMIT;";
+}
 
-    foreach ($roomFields as $room){
-        $param = substr($room->room_param, 5);
+function generateRoomsSql(&$roomFields, &$database): string
+{
+    $kaf = $database->GetKafedraIdByName($roomFields->rooKaf);
 
-        if($room == end($roomFields)){
-            $roomsSql .= $param;
-            continue;
-        }
+    $roomsSql = "INSERT INTO room (box, nomber_room, kafedra_id, deleted) VALUES ('$roomFields->roomBox', $roomFields->roomNum, $kaf, $roomFields->roomDel);";
 
-        $roomsSql .=  $param.",";
-    }
-
-    $roomsSql .= ") VALUES (";
-    foreach ($roomFields as $room){
-        if($room == end($roomFields)){
-            $roomsSql .= "'".$room->value."'";
-            continue;
-        }
-        $roomsSql .= "'".$room->value."',";
-    }
-    $roomsSql .= ");";
     return $roomsSql;
 }
 
-function generateSpeceficationSqls(&$specifications, &$romid): array
+function generateSpeceficationSql(&$specifications): string
 {
-    $spiInsertSqlList = array();
+    $spiInsertSql = "INSERT INTO room_information (room_id, specify_id, value) VALUES ";
+
     foreach ($specifications as $spi){
         $spi_id = substr($spi->spi_param, 4);
 
-        $sql = "INSERT INTO room_information (room_id, specify_id, value) VALUES (";
-        $sql .= "'".$romid."',";
-        $sql .= "'".$spi_id."',";
-        $sql .= "'".$spi->value."');";
-
-        $spiInsertSqlList[] = $sql;
-    }
-    return $spiInsertSqlList;
-}
-
-function createTransActionSql($insertRoomSql, $speceficationSqlList): string
-{
-
-    return "";
-}
-
-function insertOrUpdateRoom(&$roomFields, &$database, &$roomId)
-{
-    $qrrCheckSelect = "SELECT id_room FROM room WHERE id_room=$roomId";
-    $isExists = $database->customExistmentWithResult($qrrCheckSelect);
-
-    if($isExists == true){
-        $roomSql = "UPDATE room SET ";
-
-        foreach ($roomFields as $field){
-            $param = substr($field->room_param, 5);
-
-            if($field == end($roomFields)){
-                $roomSql .= $param."="."'".$field->value."'";
-                continue;
-            }
-
-            $roomSql .= $param."="."'".$field->value."',";
+        if($spi == end($specifications)){
+            $spiInsertSql .= "(@last_insert_id,'$spi_id','$spi->value')";
+            continue;
         }
 
-        $roomSql .= " WHERE id_room=$roomId";
-
-        if($database->customInsert($roomSql)){
-            return json_encode([$roomId => "update room succsessfull"], JSON_UNESCAPED_UNICODE);
-        }
-        else{
-            return json_encode([$roomId => "update room error"], JSON_UNESCAPED_UNICODE);
-        }
-    }
-    else{
-        $roomsSql = "INSERT INTO room (";
-
-        foreach ($roomFields as $room){
-            $param = substr($room->room_param, 5);
-
-            if($room == end($roomFields)){
-                $roomsSql .= $param;
-                continue;
-            }
-
-            $roomsSql .=  $param.",";
-        }
-
-        $roomsSql .= ") VALUES (";
-        foreach ($roomFields as $room){
-            if($room == end($roomFields)){
-                $roomsSql .= "'".$room->value."'";
-                continue;
-            }
-            $roomsSql .= "'".$room->value."',";
-        }
-        $roomsSql .= ");";
-
-        //AREA FILED WICH NOT USED
-
-        if($database->customInsert($roomsSql)){
-            return json_encode([$roomId => "insert room succsessfull"], JSON_UNESCAPED_UNICODE);
-        }
-        else{
-            return json_encode([$roomId => "insert room error"], JSON_UNESCAPED_UNICODE);
-        }
-    }
-}
-
-function insertOrUpdateRoomSpecifications(&$specifications, &$romid, &$database): array
-{
-    $arr = array();
-    foreach ($specifications as $spi){
-        $param = substr($spi->spi_param, 4);
-
-        $sqlExists =  "SELECT id FROM room_information WHERE room_id=$romid AND specify_id=$param";
-
-        //if this spi exists into db
-        if($database->customExistmentWithResult($sqlExists) == true){
-            $qrr = "UPDATE room_information SET value='$spi->value' WHERE room_id=$romid AND specify_id=$param";
-
-            if($database->customUpdate($qrr) == true){
-                $arr[$spi->spi_param] = "updated";
-            }
-            else{
-                $arr[$spi->spi_param] = "error updating";
-            }
-        }
-        else{
-            $sql = "INSERT INTO room_information (room_id, specify_id, value) VALUES (";
-            $sql .= "'".$romid."',";
-            $sql .= "'".$param."',";
-            $sql .= "'".$spi->value."');";
-            if($database->customInsert($sql) == true)
-                $arr[$spi->spi_param] = "created";
-            else
-                $arr[$spi->spi_param] = "error inserting";
-        }
+        $spiInsertSql .= "(@last_insert_id,'$spi_id','$spi->value'),";
     }
 
-    return $arr;
+    $spiInsertSql .= ";";
+
+    return $spiInsertSql;
 }
 ?>
 

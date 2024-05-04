@@ -39,6 +39,10 @@ class SqlQuarrys
     {
         return "SELECT name_kafedra FROM kafedra WHERE id_kafedra=$id;";
     }
+    public static function KafIdByName($name)
+    {
+        return "SELECT id_kafedra FROM kafedra WHERE name_kafedra='$name';";
+    }
     public static function addRoomImage($pickId, $url)
     {
         return "INSERT INTO room_images (room_id, url) VALUES ('$pickId', '$url');";
@@ -73,6 +77,27 @@ class SqlQuarrys
             JOIN room_specifications rs ON ri.specify_id = rs.id
             WHERE ri.room_id = $roomId;
             ";
+    }
+
+    public static function roomNumById($id)
+    {
+        return "SELECT nomber_room FROM room WHERE id_room=$id;";
+    }
+
+    public static function tryGetNextRoom($currentNum, $currentBox)
+    {
+        return "SELECT `id_room`
+                FROM room
+                WHERE box='$currentBox' and nomber_room > $currentNum
+                LIMIT 1;";
+    }
+
+    public static function tryGetPreviousRoom($currentNum, $currentBox)
+    {
+        return "SELECT `id_room`
+                FROM room
+                WHERE box='$currentBox' and nomber_room < $currentNum
+                LIMIT 1;";
     }
 
     public static function getSpiList()

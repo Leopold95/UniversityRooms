@@ -5,6 +5,7 @@ use scripts\DataBase;
 $database = new DataBase();
 $roomId = $_GET["roomid"];
 
+$room = $database->GetRoomById($roomId);
 $kafedra = $database->GetKafedraById($database->GetKafedraIdIntoRoom($roomId));
 $images = $database->GetRoomImages($roomId);
 $spis = $database->GetRoomSpecifications($roomId);
@@ -71,10 +72,10 @@ include ("pages/shared/header.php");
 <main class="container-fluid pb-2">
     <div class="row">
         <div class="col  mt-2 d-flex justify-content-start">
-            <button name="prevRoom">Prev</button>
+            <button name="prevRoom" class="btn btn-primary">Назад</button>
         </div>
         <div class="col  mt-2 d-flex justify-content-end">
-            <button name="nextRoom">Next</button>
+            <button name="nextRoom" class="btn btn-primary">Далі</button>
         </div>
     </div>
 
@@ -119,6 +120,11 @@ include ("pages/shared/header.php");
         </div>
     </div>
 </main>
+
+<script>
+    localStorage.setItem("currentRoomBox", "<?php echo $room->box?>");
+    localStorage.setItem("currentRoomNum", "<?php echo $room->number_room?>");
+</script>
 
 <?php
 include ("pages/shared/footer.php");

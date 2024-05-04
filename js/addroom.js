@@ -4,19 +4,22 @@ $(document).on('click', "button[name=addRoom]", (function(){
         $("#feildsNotFileldModal").modal("show");
         return;
     }
+    if($("#idRoomNumber").val() === ""){
+        $("#idNotFiledText").text("Укажіть номер аудиторії");
+        $("#feildsNotFileldModal").modal("show");
+        return;
+    }
     if($("#idSelectKafedra").val() === "-1"){
         $("#idNotFiledText").text("Укажіть кафедру  аудиторії");
         $("#feildsNotFileldModal").modal("show");
         return;
     }
 
-    let roomInfos = document.querySelectorAll('input[name^=room_]');
     let spiInfos = document.querySelectorAll('input[name^=spi_]');
-
-    const roomArr = [];
-    roomInfos.forEach((el) => {
-        roomArr.push({room_param: el.name, value: el.value});
-    });
+    let boxValue = $("#idSelectBox").val();
+    let numValue = $("#idRoomNumber").val();
+    let kafValue = $("#idSelectKafedra").val();
+    let delValue = ($("#idRoomDeleted").is(':checked') ? 1 : 0);
 
     const spiArr = [];
     spiInfos.forEach((el) => {
@@ -27,11 +30,19 @@ $(document).on('click', "button[name=addRoom]", (function(){
         url: "addroom.php",
         type: 'POST',
         data: {
-            roomInfoArr: JSON.stringify(roomArr),
+            roomFieldJson: JSON.stringify({
+                roomBox: boxValue,
+                roomNum: numValue,
+                rooKaf: kafValue,
+                roomDel: delValue
+            }),
             spiInfoArr: JSON.stringify(spiArr)
         },
         success: function(response) {
             console.log(response)
+            // if (JSON.parse(response).result !== true)
+            //     $("#roomInsertingResult").html("Помилка.");
+            //console.log(response)
         }
     });
 }));

@@ -247,6 +247,26 @@ class DataBase
             return $kafedra;
         }
 
+        return $kafedra;
+    }
+
+    public function GetKafedraIdByName($name): string
+    {
+        $kafedra = -1;
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::KafIdByName($name));
+
+            if($result->num_rows <= 0)
+                return $kafedra;
+
+            $row = mysqli_fetch_assoc($result);
+
+            $kafedra = $row["id_kafedra"];
+        }
+        catch (Exception $e){
+            return $kafedra;
+        }
 
         return $kafedra;
     }
@@ -416,8 +436,26 @@ class DataBase
         }
     }
 
+    public function customGet($qrr)
+    {
+        try{
+            $result = $this->connection->query($qrr);
+
+            if(!$result)
+                return -1;
+
+            if($result->num_rows <= 0)
+                return -1;
+            else
+                return $result;
+        }
+        catch (Exception $e){
+            return false;
+        }
+    }
+
     //simple update stmt with result
-    public function customUpdate($qrr): bool
+    public function updateWithResult($qrr): bool
     {
         try{
             $result = $this->connection->query($qrr);
@@ -432,13 +470,54 @@ class DataBase
     }
 
     //simple insert stmt with result
-    public function customInsert($qrr): bool
+    public function insertWithResult($qrr)
     {
         try{
             $result = $this->connection->query($qrr);
+
             if(!$result)
-                return false;
+                return  $this->connection->error;
             return true;
+        }
+        catch (Exception $e){
+            return false;
+        }
+    }
+
+    public function TryGetNextRoom($currentNum, $currentBox) : int
+    {
+        try{
+            $result = $this->connection->query(SqlQuarrys::tryGetNextRoom($currentNum, $currentBox));
+
+            if(!$result)
+                return  -1;
+
+            if($result->num_rows <= 0)
+                return -1;
+
+            $row = mysqli_fetch_assoc($result);
+
+            return $row["id_room"];
+        }
+        catch (Exception $e){
+            return false;
+        }
+    }
+
+    public function TryGetPreviousRoom($currentNum, $currentBox) : int
+    {
+        try{
+            $result = $this->connection->query(SqlQuarrys::tryGetPreviousRoom($currentNum, $currentBox));
+
+            if(!$result)
+                return  -1;
+
+            if($result->num_rows <= 0)
+                return -1;
+
+            $row = mysqli_fetch_assoc($result);
+
+            return $row["id_room"];
         }
         catch (Exception $e){
             return false;

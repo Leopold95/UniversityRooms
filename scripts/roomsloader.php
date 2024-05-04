@@ -1,6 +1,10 @@
 <?php
+
+///script which load rooms from database
+///with sorting or not
+
 use scripts\DataBase;
-require (__DIR__ . "/../../scripts/DataBase.php");
+require(__DIR__ . "/DataBase.php");
 
 $useSearch = $_POST["useSearch"] ?? false;
 
@@ -76,7 +80,7 @@ else {
         $block_room_id = $room->id_room;
         $block_korp = $room->box;
         $block_kafName = $database->GetKafedraNameById($room->kafedra_id);
-        require (__DIR__ . "/../../pages/parts/roomline.php");
+        require(__DIR__ . "/../../pages/parts/roomline.php");
     }
 }
 
@@ -89,7 +93,7 @@ function baseGeneration($database)
         $block_room_id = $room->id_room;
         $block_korp = $room->box;
         $block_kafName = $database->GetKafedraNameById($room->kafedra_id);
-        require (__DIR__ . "/../../pages/parts/roomline.php");
+        require(__DIR__ . "/../pages/parts/roomline.php");
     }
 }
 
