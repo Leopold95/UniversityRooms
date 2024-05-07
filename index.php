@@ -25,47 +25,51 @@ include ("pages/shared/header.php");
 ?>
 
 <main>
-    <button name="idBtnAddRoom">Додати аудиторію</button>
+    <button class="" name="idBtnAddRoom">Додати аудиторію</button>
 
     <div class="container">
         <!--Search group-->
-        <div class="col mt-2">
-            <div class="row">
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <input id="roomNumberId"  placeholder="Кабінет" type="number" class="form-control markHandleChanges"/>
-                        <select id="idSelectBox" class="form-select markHandleChangesBox" aria-label="Default select example">
-                            <option selected value="-1">Оберіть Корпус</option>
-                            <option value="А">А</option>
-                            <option value="Б">Б</option>
-                            <option value="В">В</option>
-                            <option value="Г">Г</option>
-                            <option value="Д">Д</option>
-                            <option value="Е">Е</option>
-                            <option value="Дв">Дв</option>
-                            <option value="Т">Т</option>
-                        </select>
-                        <select id="idSelectKafedra" class="form-select markHandleChangesKaf" aria-label="Default select example">
-                            <option selected value="-1">Оберіть кафедру</option>
-                            <?php
-                            foreach ($kafNamsList as $kafNam) {
-                                echo "<option value='$kafNam'>$kafNam</option>";
-                            }
-                            ?>
-                        </select>
-<!--                        <input id="boxId" placeholder="Корпус" type="text" class="form-control">-->
-<!--                        <input id="kafedraValId" placeholder="Кафедра" type="text" class="form-control">-->
-                        <button name="btnSearch" class="btn btn-outline-secondary btn-search" type="button" >Пошук</button>
-                    </div>
-                </div>
+        <div class="row mt-2">
+            <div class="input-group mb-3">
+                <input id="roomNumberId"  placeholder="Кабінет" type="number" class="form-control markHandleChanges"/>
+                <select id="idSelectBox" class="form-select markHandleChangesBox" aria-label="Default select example">
+                    <option selected value="-1">Оберіть Корпус</option>
+                    <option value="А">А</option>
+                    <option value="Б">Б</option>
+                    <option value="В">В</option>
+                    <option value="Г">Г</option>
+                    <option value="Д">Д</option>
+                    <option value="Е">Е</option>
+                    <option value="Дв">Дв</option>
+                    <option value="Т">Т</option>
+                </select>
+                <select id="idSelectKafedra" class="form-select markHandleChangesKaf" aria-label="Default select example">
+                    <option selected value="-1">Оберіть кафедру</option>
+                    <?php
+                    foreach ($kafNamsList as $kafNam) {
+                        echo "<option value='$kafNam'>$kafNam</option>";
+                    }
+                    ?>
+                </select>
+                <!--                        <input id="boxId" placeholder="Корпус" type="text" class="form-control">-->
+                <!--                        <input id="kafedraValId" placeholder="Кафедра" type="text" class="form-control">-->
+                <button name="btnSearch" class="btn btn-outline-secondary btn-search" type="button" >Пошук</button>
             </div>
         </div>
 
-        <div>
-            <div id="mainRoomsListBlock">
+        <!--List of rooms-->
+        <ul class="row" id="mainRoomsListBlock">
+        </ul>
+
+        <!--Control buttons-->
+        <div class="row">
+            <div class="col  mt-2 d-flex justify-content-start">
+                <button name="prevRoom" class="btn btn-primary">Назад</button>
+            </div>
+            <div class="col  mt-2 d-flex justify-content-end">
+                <button name="nextRoom" class="btn btn-primary">Далі</button>
             </div>
         </div>
-
     </div>
 </main>
 

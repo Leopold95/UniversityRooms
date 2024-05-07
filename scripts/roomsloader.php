@@ -36,7 +36,6 @@ else {
         }
     }
 
-
     //room box search
     if($boxTxt != "-1"){
         $roomsByBox = $database->GetRoomsByBox($boxTxt);
@@ -53,8 +52,6 @@ else {
                 $globalList[$room->id_room] = $room;
         }
     }
-
-
 
     //room kafedra search
     if ($kafedra != "-1"){
@@ -80,7 +77,7 @@ else {
         $block_room_id = $room->id_room;
         $block_korp = $room->box;
         $block_kafName = $database->GetKafedraNameById($room->kafedra_id);
-        require(__DIR__ . "/../../pages/parts/roomline.php");
+        require(__DIR__ . "/../pages/parts/roomline.php");
     }
 }
 
