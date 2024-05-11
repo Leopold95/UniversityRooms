@@ -11,12 +11,13 @@ $useSearch = $_POST["useSearch"] ?? false;
 $database = new DataBase();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    baseGeneration($database);
+    defaultSearch($database);
 }
 else {
     $roomNumber = $_POST["roomNum"];
     $kafedra = $_POST["kafedra"];
     $boxTxt = $_POST["box"];
+    $beginSearchId = $_POST["beginId"];
 
     $globalList = array();
 
@@ -69,7 +70,7 @@ else {
 
     //check empty search
     if(!$globalList)
-        baseGeneration($database);
+        defaultSearch($database);
 
     //spawn searched elements
     foreach ($globalList as $room) {
@@ -81,11 +82,11 @@ else {
     }
 }
 
-function baseGeneration($database)
+function defaultSearch($database)
 {
-    $roomsByNumber = $database->getRooms();
+    $rooms = $database->getRooms();
 
-    foreach ($roomsByNumber as $room) {
+    foreach ($rooms as $room) {
         $block_number_room = $room->number_room;
         $block_room_id = $room->id_room;
         $block_korp = $room->box;

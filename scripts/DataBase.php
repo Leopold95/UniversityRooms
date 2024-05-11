@@ -67,7 +67,41 @@ class DataBase
         $arrRooms = array();
 
         try{
-            $result = $this->connection->query($this->quarry->getAllRooms);
+            $result = $this->connection->query(SqlQuarrys::$getAllRooms);
+
+            if($result->num_rows <= 0)
+                return $arrRooms;
+
+            while($row = mysqli_fetch_assoc($result)) {
+                $elemt = new RoomEntity();
+                $elemt->id_room = $row["id_room"];
+                $elemt->box = $row["box"];
+                $elemt->number_room = $row["nomber_room"];
+                $elemt->capacity = $row["capacity"];
+                $elemt->area = $row["area"];
+                $elemt->kafedra_id = $row["kafedra_id"];
+                $elemt->specialization = $row["specialization"];
+                $elemt->Inform = $row["Inform"];
+                $elemt->Korp = $row["Korp"];
+                $elemt->educational = $row["educational"];
+                $elemt->photo_url = $row["photo_url"];
+                array_push($arrRooms, $elemt);
+            }
+        }
+        catch (Exception $e){
+            return $arrRooms;
+        }
+
+        return $arrRooms;
+    }
+
+    //returns all rooms into range
+    public function GetRoomsByRange($fromId, $toId)
+    {
+        $arrRooms = array();
+
+        try{
+            $result = $this->connection->query(SqlQuarrys::$getAllRooms);
 
             if($result->num_rows <= 0)
                 return $arrRooms;
@@ -480,6 +514,22 @@ class DataBase
             return true;
         }
         catch (Exception $e){
+            return false;
+        }
+    }
+
+    public function tryTransaction($qrrList)
+    {
+        try{
+            $this->connection->begin_transaction();
+            foreach ($qrrList as $qrr){
+                $this->connection->query($qrr);
+            }
+            $this->connection->commit();
+            return true;
+        }
+        catch (Exception $e){
+            $this->connection->rollback();
             return false;
         }
     }

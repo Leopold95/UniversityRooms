@@ -64,10 +64,10 @@ include ("pages/shared/header.php");
         <!--Control buttons-->
         <div class="row">
             <div class="col  mt-2 d-flex justify-content-start">
-                <button name="prevRoom" class="btn btn-primary">Назад</button>
+                <button name="prevRoomsList" class="btn btn-primary">Назад</button>
             </div>
             <div class="col  mt-2 d-flex justify-content-end">
-                <button name="nextRoom" class="btn btn-primary">Далі</button>
+                <button name="nextRoomsList" class="btn btn-primary">Далі</button>
             </div>
         </div>
     </div>

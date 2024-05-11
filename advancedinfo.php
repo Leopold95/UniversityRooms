@@ -80,7 +80,24 @@ include ("pages/shared/header.php");
     </div>
 
     <div class="row">
+        <!--room info col-->
         <div class="col mt-2">
+            <h4>Інформація</h4>
+            <table>
+                <tr>
+                    <th>Номер кабінету</th>
+                    <td><?php echo $room->number_room?></td>
+                </tr>
+                <tr>
+                    <th>Корпус</th>
+                    <td><?php echo $room->box?></td>
+                </tr>
+                <tr>
+                    <th>Кафедра</th>
+                    <td><?php echo $kafedra->name_kafedra?></td>
+                </tr>
+            </table>
+            <h4>Специфікації</h4>
             <table>
                 <?php
                 foreach ($spis as $spi) {
@@ -97,11 +114,12 @@ include ("pages/shared/header.php");
             </table>
         </div>
 
+        <!--room images col-->
         <div class="col mt-2">
             <!-- room image preview -->
             <div class="row">
                     <!-- default preview of forst image into array -->
-                    <img class="img-preview" src="<?php echo $images[0] ?? "";?>" id="roomPreview">
+                    <img alt="Зображень немає" class="img-preview" src="<?php echo $images[0] ?? "";?>" id="roomPreview">
 
                     <div class="mt-2 d-flex justify-content-center">
                         <button type="button" value="<?php echo $roomId?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>

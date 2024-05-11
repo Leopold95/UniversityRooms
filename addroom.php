@@ -8,11 +8,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $roomFields = json_decode($_POST["roomFieldJson"]);
 
     $room_sql = generateRoomsSql($roomFields, $database);
+    $lastInsertSql = "SET @last_insert_id = LAST_INSERT_ID();";
     $spices_sql = generateSpeceficationSql($specifications);
-    $qrr =  getSqlToInsert($room_sql, $spices_sql);
 
-    echo $qrr;
-    $result = $database->insertWithResult($qrr);
+
+    $arrList = array($room_sql, $lastInsertSql, $spices_sql);
+
+//    $qrr =  getSqlToInsert($room_sql, $spices_sql);
+//    print_r($arrList);
+//    echo $qrr;
+    $result = $database->tryTransaction($arrList);
     echo json_encode(["result" => $result], JSON_UNESCAPED_UNICODE);
 
     die();
@@ -132,7 +137,7 @@ function generateRoomsSql(&$roomFields, &$database): string
 {
     $kaf = $database->GetKafedraIdByName($roomFields->rooKaf);
 
-    $roomsSql = "INSERT INTO room (box, nomber_room, kafedra_id, deleted) VALUES ('$roomFields->roomBox', $roomFields->roomNum, $kaf, $roomFields->roomDel);";
+    $roomsSql = "INSERT INTO room (box, nomber_room, kafedra_id, deleted, Inform, photo_url) VALUES ('$roomFields->roomBox', $roomFields->roomNum, $kaf, $roomFields->roomDel, '', '');";
 
     return $roomsSql;
 }

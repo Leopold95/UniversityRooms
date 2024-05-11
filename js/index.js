@@ -7,6 +7,9 @@ let roomValue = "";
 let boxValue = "-1";
 let kafValue = "-1";
 
+//last id for pagenation rooms
+let lastRoomId = 1;
+
 $(document).ready(function (){
     defaultSearch();
 });
@@ -73,7 +76,7 @@ function search(){
         url: "scripts/roomsloader.php",
         type: 'POST',
         data: {
-            useSearch: true,
+            beginId: lastRoomId,
             roomNum: roomValue,
             box: boxValue,
             kafedra: kafValue
@@ -96,4 +99,12 @@ function defaultSearch(){
 
 $(document).on('click', "button[name=idBtnAddRoom]", (function(){
     window.location.href = "addroom.php";
+}));
+
+$(document).on('click', "button[name=prevRoomsList]", (function(){
+
+}));
+
+$(document).on('click', "button[name=nextRoomsList]", (function(){
+
 }));
