@@ -3,24 +3,45 @@ require (__DIR__."/scripts/DataBase.php");
 
 $database = new \scripts\DataBase();
 
+$isEditing = false;
+
+//btn "add room" in "addroom.php" pressed
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $specifications = json_decode($_POST["spiInfoArr"]);
     $roomFields = json_decode($_POST["roomFieldJson"]);
+    $roomInformation = null;
 
     $room_sql = generateRoomsSql($roomFields, $database);
     $lastInsertSql = "SET @last_insert_id = LAST_INSERT_ID();";
     $spices_sql = generateSpeceficationSql($specifications);
 
-
     $arrList = array($room_sql, $lastInsertSql, $spices_sql);
 
-//    $qrr =  getSqlToInsert($room_sql, $spices_sql);
-//    print_r($arrList);
-//    echo $qrr;
     $result = $database->tryTransaction($arrList);
     echo json_encode(["result" => $result], JSON_UNESCAPED_UNICODE);
-
     die();
+
+//room edit
+}else if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["roomId"])){
+    $isEditing = true;
+
+    $room = $database->GetRoomById($_GET["roomId"]);
+    $roomNumber = $room->number_room;
+    $roomBox = $room->box;
+    $kafedraName = $database->GetKafedraNameById($room->id_room);
+
+    $existingSpis = $database->GetRoomSpecifications($room->id_room);
+    $avaliableSpis = $database->GetSpecifications();
+
+    foreach ($existingSpis as $spi){
+        print_r($spi);
+        echo "<br>";
+    }
+    echo "<br>";
+    foreach ($avaliableSpis as $spi){
+        print_r($spi);
+        echo "<br>";
+    }
 }
 
 
@@ -63,6 +84,14 @@ include ("pages/shared/header.php");
 
 <main class="container-fluid">
     <label id="roomInsertingResult"></label>
+
+    <?php
+    if($isEditing){
+        echo "<h3>Редагування.</h3>";
+        echo "<label>Заповніть ті поля, які потрібно змінити</label>";
+    }
+    ?>
+
     <h3>Аудиторія</h3>
     <table>
         <tr>
@@ -107,17 +136,40 @@ include ("pages/shared/header.php");
     <h3>Спецефікації</h3>
     <table>
         <?php
-        $listValues = $database->GetSpecifications();
-        foreach($listValues as $spi){
-            echo "<tr>";
+        //if editing
+        $lastSpiID = 0;
+        if($isEditing){
+            $listValues = $database->GetSpecifications();
+            foreach($listValues as $spi){
+                echo "<tr>";
                 echo "<th>".$spi["value"]."</th>";
                 echo "<td><input class='form-control' name="."spi_".$spi["id"]."></td>";
-            echo "</tr>";
+                echo "</tr>";
+            }
+
+            //if adding
+        }else{
+            $listValues = $database->GetSpecifications();
+            foreach($listValues as $spi){
+                echo "<tr>";
+                echo "<th>".$spi["value"]."</th>";
+                echo "<td><input class='form-control' name="."spi_".$spi["id"]."></td>";
+                echo "</tr>";
+            }
         }
+
         ?>
     </table>
 
-    <button name="addRoom">Додати Аудиторію</button>
+    <?php
+        if($isEditing){
+            echo "<button name='editRoom'>Редагувати</button>";
+        }
+        else{
+            echo "<button name='addRoom'>Додати</button>";
+        }
+    ?>
+
 </main>
 
 <?php

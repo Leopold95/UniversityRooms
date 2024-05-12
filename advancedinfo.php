@@ -124,6 +124,7 @@ include ("pages/shared/header.php");
                     <div class="mt-2 d-flex justify-content-center">
                         <button type="button" value="<?php echo $roomId?>" name="openAddingImageModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">Додати фото</button>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Видалити фото</button>
+                        <button type="button" class="btn btn-primary" name="idEditRoom">Редагувати</button>
                     </div>
             </div>
 
@@ -142,6 +143,7 @@ include ("pages/shared/header.php");
 <script>
     localStorage.setItem("currentRoomBox", "<?php echo $room->box?>");
     localStorage.setItem("currentRoomNum", "<?php echo $room->number_room?>");
+    localStorage.setItem("currentRoomId", "<?php echo $room->id_room?>");
 </script>
 
 <?php

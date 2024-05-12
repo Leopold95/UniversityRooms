@@ -153,3 +153,9 @@ $(document).on('click', "button[name=nextRoom]", (function(){
         }
     });
 }));
+
+
+//on btn edit room pressed
+$(document).on('click', "button[name=idEditRoom]", (function(){
+    window.location.href = "addroom.php?roomId="+localStorage.getItem("currentRoomId");
+}));

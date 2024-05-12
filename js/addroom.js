@@ -46,4 +46,6 @@ $(document).on('click', "button[name=addRoom]", (function(){
         }
     });
 }));
+$(document).on('click', "button[name=editRoom]", (function(){
 
+}));
