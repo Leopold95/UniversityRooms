@@ -33,15 +33,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $existingSpis = $database->GetRoomSpecifications($room->id_room);
     $avaliableSpis = $database->GetSpecifications();
 
-    foreach ($existingSpis as $spi){
-        print_r($spi);
-        echo "<br>";
-    }
-    echo "<br>";
-    foreach ($avaliableSpis as $spi){
-        print_r($spi);
-        echo "<br>";
-    }
+    echo  "Сторінка в розробці";
+    die();
 }
 
 
@@ -139,12 +132,9 @@ include ("pages/shared/header.php");
         //if editing
         $lastSpiID = 0;
         if($isEditing){
-            $listValues = $database->GetSpecifications();
-            foreach($listValues as $spi){
-                echo "<tr>";
-                echo "<th>".$spi["value"]."</th>";
-                echo "<td><input class='form-control' name="."spi_".$spi["id"]."></td>";
-                echo "</tr>";
+            foreach ($existingSpis as $exSpi){
+                $lastSpiID ++;
+
             }
 
             //if adding
@@ -170,6 +160,8 @@ include ("pages/shared/header.php");
         }
     ?>
 
+
+
 </main>
 
 <?php
@@ -179,12 +171,6 @@ include ("pages/shared/footer.php");
 </html>
 
 <?php
-
-function getSqlToInsert($room, $spices): string
-{
-    return "START TRANSACTION;$room SET @last_insert_id = LAST_INSERT_ID();$spices COMMIT;";
-}
-
 function generateRoomsSql(&$roomFields, &$database): string
 {
     $kaf = $database->GetKafedraIdByName($roomFields->rooKaf);

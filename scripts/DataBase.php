@@ -417,6 +417,7 @@ class DataBase
                 $ent = new ShortRoomSpecificationEntity();
                 $ent->spi_label = $row["spi_label"];
                 $ent->inf_value = $row["inf_value"];
+                //$spiList[$row["spi_label"]] = $row["inf_value"];
                 array_push($spiList, $ent);
             }
         }
